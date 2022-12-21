@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: "jdbc:mariadb://localhost:3306/community"
+    username: "root"
+    password: "root"
+    driver-class-name: "org.mariadb.jdbc.Driver"
+sa-token:
+  token-name: "token"
+server:
+  servlet:
+    context-path: "/api"

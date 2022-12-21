@@ -16,9 +16,16 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 dependencies {
+
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.2.7-SNAPSHOT'
+    implementation 'cn.dev33:sa-token-spring-boot-starter:1.33.0'
+    implementation 'cn.dev33:sa-token-dao-redis-jackson:1.33.0'
+    implementation 'org.apache.commons:commons-pool2'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'

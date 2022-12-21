@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.enaium.community.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="cn.enaium.community.model.entity.CommentEntity">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="user_id" column="user_id" jdbcType="BIGINT"/>
+            <result property="post_id" column="post_id" jdbcType="BIGINT"/>
+            <result property="vote_up" column="vote_up" jdbcType="INTEGER"/>
+            <result property="vote_down" column="vote_down" jdbcType="INTEGER"/>
+            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="answer" column="answer" jdbcType="TINYINT"/>
+            <result property="del" column="del" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,post_id,
+        vote_up,vote_down,create_time,
+        update_time,answer,del
+    </sql>
+</mapper>
