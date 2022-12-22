@@ -20,38 +20,51 @@
   -->
 
 <script setup lang="ts">
-import {onMounted, reactive} from "vue";
-import http from "@/util/http";
-import PostList from "@/components/PostList.vue";
-import {useRoute} from "vue-router";
+import {h} from 'vue'
+import type {MenuOption} from 'naive-ui'
+import Logo from '@/assets/vue.svg'
+import {RouterLink} from "vue-router";
 
-
-const data = reactive({
-  category: useRoute().query.category,
-  categories: []
-})
-
-onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
-  })
-})
-
+const menuOptions: MenuOption[] = [
+  {
+    label: () =>
+        h(
+            RouterLink,
+            {
+              to: {
+                name: 'register'
+              }
+            },
+            {default: () => 'Register'}
+        )
+  },
+  {
+    label: () =>
+        h(
+            RouterLink,
+            {
+              to: {
+                name: 'login'
+              }
+            },
+            {default: () => 'Login'}
+        ),
+  }
+]
 </script>
+
 <template>
-  <n-button-group>
-    <n-tooltip placement="top-start" trigger="hover" v-for="category in data.categories">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
+  <n-space justify="space-between">
+    <img
+        :src="Logo"
+        @click="this.$router.push({path:'/'})"
+    />
+    <n-menu mode="horizontal" :options="menuOptions"/>
+  </n-space>
 </template>
 
-
 <style scoped>
-
+.n-space {
+  background: darkgrey;
+}
 </style>

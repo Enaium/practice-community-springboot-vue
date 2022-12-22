@@ -39,24 +39,29 @@ const login = () => {
 }
 </script>
 <template>
-  <n-form ref="formRef" :model="data.form" style="margin:0 280px">
-    <n-form-item path="username" label="username">
-      <n-input v-model:value="data.form.username"/>
-    </n-form-item>
+  <div style="display:flex;flex-direction: column;justify-content:center;align-items: center;min-height: 100vh">
+    <h1>Login</h1>
+    <n-card style="max-width: 300px;max-height: 300px">
+      <n-form ref="formRef" :model="data.form">
+        <n-form-item path="username" label="username">
+          <n-input v-model:value="data.form.username"/>
+        </n-form-item>
 
-    <n-form-item path="password" label="password">
-      <n-input v-model:value="data.form.password"/>
-    </n-form-item>
+        <n-form-item path="password" label="password">
+          <n-input v-model:value="data.form.password"/>
+        </n-form-item>
 
-    <n-button
-        round
-        type="primary"
-        @click="login"
-        style="width: 100%"
-    >
-      Login
-    </n-button>
-  </n-form>
+        <n-button
+            round
+            type="primary"
+            @click="login"
+            style="width: 100%"
+        >
+          Login
+        </n-button>
+      </n-form>
+    </n-card>
+  </div>
 </template>
 
 <style scoped>

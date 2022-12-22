@@ -20,38 +20,9 @@
   -->
 
 <script setup lang="ts">
-import {onMounted, reactive} from "vue";
-import http from "@/util/http";
-import PostList from "@/components/PostList.vue";
-import {useRoute} from "vue-router";
-
-
-const data = reactive({
-  category: useRoute().query.category,
-  categories: []
-})
-
-onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
-  })
-})
 
 </script>
+
 <template>
-  <n-button-group>
-    <n-tooltip placement="top-start" trigger="hover" v-for="category in data.categories">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
+  <h1>Publish</h1>
 </template>
-
-
-<style scoped>
-
-</style>

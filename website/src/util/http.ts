@@ -20,8 +20,6 @@
  */
 
 import axios from "axios";
-import router from "@/router";
-
 
 
 const http = axios.create({
@@ -37,7 +35,7 @@ http.interceptors.request.use(config => {
 
 http.interceptors.response.use(response => {
     if (response.data.code === 2001) {
-        router.push("/login").then(r => r)
+
     }
 
     if (response.data.code != 200) {
@@ -45,7 +43,9 @@ http.interceptors.response.use(response => {
     }
 
     return response
-}, error => Promise.reject(error))
-
+}, error => {
+    window.$message.error("Request Blocked")
+    Promise.reject(error).then(r => r)
+})
 
 export default http

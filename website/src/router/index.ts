@@ -22,14 +22,41 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import Login from '@/pages/Login.vue';
 import Home from "@/pages/Home.vue";
+import Register from "@/pages/Register.vue";
+import Publish from "@/pages/Publish.vue";
+import Profile from "@/components/Profile.vue";
+import Main from "@/layouts/Main.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/",
-        component: Home
+        name: "main",
+        component: Main,
+        children: [
+            {
+                path: "/",
+                name: "home",
+                component: Home,
+            },
+            {
+                path: "/profile",
+                name: "profile",
+                component: Profile,
+            },
+            {
+                path: "/publish",
+                name: "publish",
+                component: Publish,
+            }]
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: Register,
     },
     {
         path: "/login",
+        name: "login",
         component: Login,
     }
 ];

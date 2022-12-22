@@ -21,37 +21,39 @@
 
 <script setup lang="ts">
 import {onMounted, reactive} from "vue";
-import http from "@/util/http";
-import PostList from "@/components/PostList.vue";
 import {useRoute} from "vue-router";
-
+import http from "@/util/http";
 
 const data = reactive({
-  category: useRoute().query.category,
-  categories: []
+  id: useRoute().query.id,
+  me: false,
+  info: {
+    username: null,
+    avatar: null,
+    post_count: 0,
+    comment_count: 0,
+    banned: 0,
+    create_time: new Date(),
+    update_time: new Date()
+  }
 })
 
 onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
-  })
+  if (data.id) {
+    http.post("/user/info", {
+      id: data.id
+    }).then(r => {
+      data.info = r.data.content
+    })
+  } else {
+    data.me = true
+    http.post("/user/info").then(r => {
+      data.info = r.data.content
+    })
+  }
 })
 
 </script>
 <template>
-  <n-button-group>
-    <n-tooltip placement="top-start" trigger="hover" v-for="category in data.categories">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
+  <h1>{{ data.info.username }}</h1>
 </template>
-
-
-<style scoped>
-
-</style>

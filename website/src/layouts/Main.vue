@@ -20,38 +20,33 @@
   -->
 
 <script setup lang="ts">
-import {onMounted, reactive} from "vue";
-import http from "@/util/http";
-import PostList from "@/components/PostList.vue";
-import {useRoute} from "vue-router";
-
-
-const data = reactive({
-  category: useRoute().query.category,
-  categories: []
-})
-
-onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
-  })
-})
-
+import Menu from "@/components/Menu.vue";
+import Side from "@/components/Side.vue";
 </script>
+
 <template>
-  <n-button-group>
-    <n-tooltip placement="top-start" trigger="hover" v-for="category in data.categories">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
+  <n-layout>
+    <n-layout-header>
+      <Menu/>
+    </n-layout-header>
+    <n-layout has-sider>
+      <n-layout-content content-style="padding: 24px;">
+        <n-card>
+          <router-view/>
+        </n-card>
+      </n-layout-content>
+      <n-layout-sider content-style="padding: 24px;">
+        <Side/>
+      </n-layout-sider>
+    </n-layout>
+    <n-layout-footer>Chengfu Road</n-layout-footer>
+  </n-layout>
 </template>
 
-
 <style scoped>
-
+.n-layout {
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100vh;
+}
 </style>

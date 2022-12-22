@@ -18,40 +18,51 @@
   - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
-
 <script setup lang="ts">
-import {onMounted, reactive} from "vue";
+import {reactive} from "vue";
 import http from "@/util/http";
-import PostList from "@/components/PostList.vue";
-import {useRoute} from "vue-router";
-
 
 const data = reactive({
-  category: useRoute().query.category,
-  categories: []
+  form: {
+    username: '',
+    password: ''
+  }
 })
 
-onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
+const login = () => {
+  http.post("/auth/login", data.form).then(result => {
+    if (result.data.code == 200) {
+      localStorage.setItem("token", result.data.content)
+      window.$message.success(result.data.message)
+    }
   })
-})
-
+}
 </script>
 <template>
-  <n-button-group>
-    <n-tooltip placement="top-start" trigger="hover" v-for="category in data.categories">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
+  <div style="display:flex;flex-direction: column;justify-content:center;align-items: center;min-height: 100vh">
+    <h1>Register</h1>
+    <n-card style="max-width: 300px;max-height: 300px">
+      <n-form ref="formRef" :model="data.form">
+        <n-form-item path="username" label="username">
+          <n-input v-model:value="data.form.username"/>
+        </n-form-item>
+
+        <n-form-item path="password" label="password">
+          <n-input v-model:value="data.form.password"/>
+        </n-form-item>
+
+        <n-button
+            round
+            type="primary"
+            @click="login"
+            style="width: 100%"
+        >
+          Login
         </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
+      </n-form>
+    </n-card>
+  </div>
 </template>
 
-
 <style scoped>
-
 </style>

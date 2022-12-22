@@ -22,6 +22,7 @@
 import {
     create,
     NButton,
+    NButtonGroup,
     NCard,
     NCheckbox,
     NConfigProvider,
@@ -62,12 +63,19 @@ import {
     NThing,
     NTimeline,
     NTimelineItem,
-    NTooltip
+    NTooltip,
+    NLayout,
+    NLayoutSider,
+    NLayoutHeader,
+    NLayoutFooter,
+    NLayoutContent,
+    NImage
 } from 'naive-ui'
 
 export default create({
     components: [
         NButton,
+        NButtonGroup,
         NCard,
         NCheckbox,
         NConfigProvider,
@@ -108,6 +116,12 @@ export default create({
         NThing,
         NTimeline,
         NTimelineItem,
-        NTooltip
+        NTooltip,
+        NLayout,
+        NLayoutSider,
+        NLayoutHeader,
+        NLayoutFooter,
+        NLayoutContent,
+        NImage
     ]
 })

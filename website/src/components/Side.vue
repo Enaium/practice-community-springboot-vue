@@ -20,38 +20,42 @@
   -->
 
 <script setup lang="ts">
-import {onMounted, reactive} from "vue";
-import http from "@/util/http";
-import PostList from "@/components/PostList.vue";
-import {useRoute} from "vue-router";
 
+import http from "@/util/http.js";
+import {onMounted, reactive} from "vue";
 
 const data = reactive({
-  category: useRoute().query.category,
-  categories: []
+  isLogin: false
 })
 
 onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
+  http.get('/auth/isLogin').then(r => {
+    data.isLogin = r.data.content
   })
 })
 
 </script>
+
 <template>
-  <n-button-group>
-    <n-tooltip placement="top-start" trigger="hover" v-for="category in data.categories">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
+  <n-space vertical>
+    <n-card title="Community" size="small">
+      <div v-if="data.isLogin">
+        <n-button>Publish</n-button>
+      </div>
+      <div v-else>
+        You can
+        <router-link to="/login">
+          <n-gradient-text type="success">
+            login
+          </n-gradient-text>
+        </router-link>
+        or
+        <router-link to="/register">
+          <n-gradient-text type="success">
+            register
+          </n-gradient-text>
+        </router-link>
+      </div>
+    </n-card>
+  </n-space>
 </template>
-
-
-<style scoped>
-
-</style>
