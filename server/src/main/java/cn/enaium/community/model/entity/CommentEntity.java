@@ -20,12 +20,12 @@ public class CommentEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Long user_id;
-    private Long post_id;
-    private Integer vote_up;
-    private Integer vote_down;
-    private Date create_time;
-    private Date update_time;
+    private Long userId;
+    private Long postId;
+    private Integer voteUp;
+    private Integer voteDown;
+    private Date createTime;
+    private Date updateTime;
     private Integer answer;
     private Integer del;
 
@@ -42,12 +42,12 @@ public class CommentEntity implements Serializable {
         }
         CommentEntity other = (CommentEntity) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-                && (this.getUser_id() == null ? other.getUser_id() == null : this.getUser_id().equals(other.getUser_id()))
-                && (this.getPost_id() == null ? other.getPost_id() == null : this.getPost_id().equals(other.getPost_id()))
-                && (this.getVote_up() == null ? other.getVote_up() == null : this.getVote_up().equals(other.getVote_up()))
-                && (this.getVote_down() == null ? other.getVote_down() == null : this.getVote_down().equals(other.getVote_down()))
-                && (this.getCreate_time() == null ? other.getCreate_time() == null : this.getCreate_time().equals(other.getCreate_time()))
-                && (this.getUpdate_time() == null ? other.getUpdate_time() == null : this.getUpdate_time().equals(other.getUpdate_time()))
+                && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+                && (this.getPostId() == null ? other.getPostId() == null : this.getPostId().equals(other.getPostId()))
+                && (this.getVoteUp() == null ? other.getVoteUp() == null : this.getVoteUp().equals(other.getVoteUp()))
+                && (this.getVoteDown() == null ? other.getVoteDown() == null : this.getVoteDown().equals(other.getVoteDown()))
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
                 && (this.getAnswer() == null ? other.getAnswer() == null : this.getAnswer().equals(other.getAnswer()))
                 && (this.getDel() == null ? other.getDel() == null : this.getDel().equals(other.getDel()));
     }
@@ -57,12 +57,12 @@ public class CommentEntity implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUser_id() == null) ? 0 : getUser_id().hashCode());
-        result = prime * result + ((getPost_id() == null) ? 0 : getPost_id().hashCode());
-        result = prime * result + ((getVote_up() == null) ? 0 : getVote_up().hashCode());
-        result = prime * result + ((getVote_down() == null) ? 0 : getVote_down().hashCode());
-        result = prime * result + ((getCreate_time() == null) ? 0 : getCreate_time().hashCode());
-        result = prime * result + ((getUpdate_time() == null) ? 0 : getUpdate_time().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getPostId() == null) ? 0 : getPostId().hashCode());
+        result = prime * result + ((getVoteUp() == null) ? 0 : getVoteUp().hashCode());
+        result = prime * result + ((getVoteDown() == null) ? 0 : getVoteDown().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getAnswer() == null) ? 0 : getAnswer().hashCode());
         result = prime * result + ((getDel() == null) ? 0 : getDel().hashCode());
         return result;
@@ -75,12 +75,12 @@ public class CommentEntity implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", user_id=").append(user_id);
-        sb.append(", post_id=").append(post_id);
-        sb.append(", vote_up=").append(vote_up);
-        sb.append(", vote_down=").append(vote_down);
-        sb.append(", create_time=").append(create_time);
-        sb.append(", update_time=").append(update_time);
+        sb.append(", user_id=").append(userId);
+        sb.append(", post_id=").append(postId);
+        sb.append(", vote_up=").append(voteUp);
+        sb.append(", vote_down=").append(voteDown);
+        sb.append(", create_time=").append(createTime);
+        sb.append(", update_time=").append(updateTime);
         sb.append(", answer=").append(answer);
         sb.append(", del=").append(del);
         sb.append(", serialVersionUID=").append(serialVersionUID);

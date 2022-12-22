@@ -19,11 +19,11 @@ public class UserMessageEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Long user_id;
-    private Long post_id;
-    private Long comment_id;
+    private Long userId;
+    private Long postId;
+    private Long commentId;
     private Integer read;
-    private Date create_time;
+    private Date createTime;
 
     @Override
     public boolean equals(Object that) {
@@ -38,11 +38,11 @@ public class UserMessageEntity implements Serializable {
         }
         UserMessageEntity other = (UserMessageEntity) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-                && (this.getUser_id() == null ? other.getUser_id() == null : this.getUser_id().equals(other.getUser_id()))
-                && (this.getPost_id() == null ? other.getPost_id() == null : this.getPost_id().equals(other.getPost_id()))
-                && (this.getComment_id() == null ? other.getComment_id() == null : this.getComment_id().equals(other.getComment_id()))
+                && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+                && (this.getPostId() == null ? other.getPostId() == null : this.getPostId().equals(other.getPostId()))
+                && (this.getCommentId() == null ? other.getCommentId() == null : this.getCommentId().equals(other.getCommentId()))
                 && (this.getRead() == null ? other.getRead() == null : this.getRead().equals(other.getRead()))
-                && (this.getCreate_time() == null ? other.getCreate_time() == null : this.getCreate_time().equals(other.getCreate_time()));
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
     }
 
     @Override
@@ -50,11 +50,11 @@ public class UserMessageEntity implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUser_id() == null) ? 0 : getUser_id().hashCode());
-        result = prime * result + ((getPost_id() == null) ? 0 : getPost_id().hashCode());
-        result = prime * result + ((getComment_id() == null) ? 0 : getComment_id().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getPostId() == null) ? 0 : getPostId().hashCode());
+        result = prime * result + ((getCommentId() == null) ? 0 : getCommentId().hashCode());
         result = prime * result + ((getRead() == null) ? 0 : getRead().hashCode());
-        result = prime * result + ((getCreate_time() == null) ? 0 : getCreate_time().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         return result;
     }
 
@@ -65,11 +65,11 @@ public class UserMessageEntity implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", user_id=").append(user_id);
-        sb.append(", post_id=").append(post_id);
-        sb.append(", comment_id=").append(comment_id);
+        sb.append(", user_id=").append(userId);
+        sb.append(", post_id=").append(postId);
+        sb.append(", comment_id=").append(commentId);
         sb.append(", read=").append(read);
-        sb.append(", create_time=").append(create_time);
+        sb.append(", create_time=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

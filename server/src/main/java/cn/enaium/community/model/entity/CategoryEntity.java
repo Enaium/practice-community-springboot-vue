@@ -22,8 +22,8 @@ public class CategoryEntity implements Serializable {
     private Integer id;
     private String title;
     private String description;
-    private Date create_time;
-    private Date update_time;
+    private Date createTime;
+    private Date updateTime;
 
     @Override
     public boolean equals(Object that) {
@@ -40,8 +40,8 @@ public class CategoryEntity implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
                 && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
                 && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-                && (this.getCreate_time() == null ? other.getCreate_time() == null : this.getCreate_time().equals(other.getCreate_time()))
-                && (this.getUpdate_time() == null ? other.getUpdate_time() == null : this.getUpdate_time().equals(other.getUpdate_time()));
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
     }
 
     @Override
@@ -51,8 +51,8 @@ public class CategoryEntity implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
-        result = prime * result + ((getCreate_time() == null) ? 0 : getCreate_time().hashCode());
-        result = prime * result + ((getUpdate_time() == null) ? 0 : getUpdate_time().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         return result;
     }
 
@@ -65,8 +65,8 @@ public class CategoryEntity implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", title=").append(title);
         sb.append(", description=").append(description);
-        sb.append(", create_time=").append(create_time);
-        sb.append(", update_time=").append(update_time);
+        sb.append(", create_time=").append(createTime);
+        sb.append(", update_time=").append(updateTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

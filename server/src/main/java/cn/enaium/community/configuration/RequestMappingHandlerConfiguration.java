@@ -19,30 +19,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-package cn.enaium.community.controller;
+package cn.enaium.community.configuration;
 
-import cn.enaium.community.model.result.Result;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import lombok.val;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 
 /**
  * @author Enaium
  */
-@ControllerAdvice
-public class ExceptionController {
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    private Result<String> exception(HttpServletRequest request, Exception exception) {
+@Configuration
+public class RequestMappingHandlerConfiguration {
+    private final RequestMappingHandlerAdapter requestMappingHandlerAdapter;
 
-        if (exception instanceof HttpMessageNotReadableException) {
-            return Result.fail(Result.Code.PARAM_ERROR);
-        }
+    public RequestMappingHandlerConfiguration(RequestMappingHandlerAdapter requestMappingHandlerAdapter) {
+        this.requestMappingHandlerAdapter = requestMappingHandlerAdapter;
+    }
 
-        exception.printStackTrace();
-        return Result.fail(Result.Code.FAIL);
+    @Bean
+    public ParamMapArgumentResolvers paramMapArgumentResolvers() {
+        val paramMapArgumentResolvers = new ParamMapArgumentResolvers();
+        requestMappingHandlerAdapter.setArgumentResolvers(Collections.singletonList(paramMapArgumentResolvers));
+        return paramMapArgumentResolvers;
     }
 }

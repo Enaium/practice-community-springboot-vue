@@ -21,28 +21,40 @@
 
 package cn.enaium.community.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
+import cn.enaium.community.mapper.UserMapper;
+import cn.enaium.community.model.entity.UserEntity;
 import cn.enaium.community.model.result.Result;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
+import cn.enaium.community.util.ParamMap;
+import lombok.val;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Enaium
  */
-@ControllerAdvice
-public class ExceptionController {
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    private Result<String> exception(HttpServletRequest request, Exception exception) {
+@RestController
+@RequestMapping("/user")
+public class UserController {
 
-        if (exception instanceof HttpMessageNotReadableException) {
-            return Result.fail(Result.Code.PARAM_ERROR);
+    private final UserMapper userMapper;
+
+    public UserController(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
+    @PostMapping("/info")
+    public Result<UserEntity> info(@RequestParam ParamMap<String, Object> params) {
+        if (params.containsKey("id")) {
+            val user = userMapper.selectById(((params.getLong("id"))));
+            if (user == null) {
+                return Result.fail(Result.Code.USERNAME_NOT_EXIST);
+            }
+            user.setPassword(null);
+            return Result.success(user);
         }
-
-        exception.printStackTrace();
-        return Result.fail(Result.Code.FAIL);
+        return Result.success(userMapper.selectById(StpUtil.getLoginIdAsLong()));
     }
 }

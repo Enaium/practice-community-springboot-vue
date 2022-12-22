@@ -22,11 +22,11 @@ public class UserEntity implements Serializable {
     private String username;
     private String password;
     private String avatar;
-    private Integer post_count;
-    private Integer comment_count;
+    private Integer postCount;
+    private Integer commentCount;
     private Boolean banned;
-    private Date create_time;
-    private Date update_time;
+    private Date createTime;
+    private Date updateTime;
 
     @Override
     public boolean equals(Object that) {
@@ -44,11 +44,11 @@ public class UserEntity implements Serializable {
                 && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
                 && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
                 && (this.getAvatar() == null ? other.getAvatar() == null : this.getAvatar().equals(other.getAvatar()))
-                && (this.getPost_count() == null ? other.getPost_count() == null : this.getPost_count().equals(other.getPost_count()))
-                && (this.getComment_count() == null ? other.getComment_count() == null : this.getComment_count().equals(other.getComment_count()))
+                && (this.getPostCount() == null ? other.getPostCount() == null : this.getPostCount().equals(other.getPostCount()))
+                && (this.getCommentCount() == null ? other.getCommentCount() == null : this.getCommentCount().equals(other.getCommentCount()))
                 && (this.getBanned() == null ? other.getBanned() == null : this.getBanned().equals(other.getBanned()))
-                && (this.getCreate_time() == null ? other.getCreate_time() == null : this.getCreate_time().equals(other.getCreate_time()))
-                && (this.getUpdate_time() == null ? other.getUpdate_time() == null : this.getUpdate_time().equals(other.getUpdate_time()));
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
     }
 
     @Override
@@ -59,11 +59,11 @@ public class UserEntity implements Serializable {
         result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
         result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
         result = prime * result + ((getAvatar() == null) ? 0 : getAvatar().hashCode());
-        result = prime * result + ((getPost_count() == null) ? 0 : getPost_count().hashCode());
-        result = prime * result + ((getComment_count() == null) ? 0 : getComment_count().hashCode());
+        result = prime * result + ((getPostCount() == null) ? 0 : getPostCount().hashCode());
+        result = prime * result + ((getCommentCount() == null) ? 0 : getCommentCount().hashCode());
         result = prime * result + ((getBanned() == null) ? 0 : getBanned().hashCode());
-        result = prime * result + ((getCreate_time() == null) ? 0 : getCreate_time().hashCode());
-        result = prime * result + ((getUpdate_time() == null) ? 0 : getUpdate_time().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         return result;
     }
 
@@ -77,11 +77,11 @@ public class UserEntity implements Serializable {
         sb.append(", username=").append(username);
         sb.append(", password=").append(password);
         sb.append(", avatar=").append(avatar);
-        sb.append(", post_count=").append(post_count);
-        sb.append(", comment_count=").append(comment_count);
+        sb.append(", post_count=").append(postCount);
+        sb.append(", comment_count=").append(commentCount);
         sb.append(", banned=").append(banned);
-        sb.append(", create_time=").append(create_time);
-        sb.append(", update_time=").append(update_time);
+        sb.append(", create_time=").append(createTime);
+        sb.append(", update_time=").append(updateTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

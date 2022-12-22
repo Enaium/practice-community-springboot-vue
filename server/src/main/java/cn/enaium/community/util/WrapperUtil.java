@@ -19,30 +19,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-package cn.enaium.community.controller;
+package cn.enaium.community.util;
 
-import cn.enaium.community.model.result.Result;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.function.Consumer;
 
 /**
  * @author Enaium
  */
-@ControllerAdvice
-public class ExceptionController {
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    private Result<String> exception(HttpServletRequest request, Exception exception) {
-
-        if (exception instanceof HttpMessageNotReadableException) {
-            return Result.fail(Result.Code.PARAM_ERROR);
-        }
-
-        exception.printStackTrace();
-        return Result.fail(Result.Code.FAIL);
+public class WrapperUtil {
+    public static <T> QueryWrapper<T> queryWrapper(Consumer<QueryWrapper<T>> queryWrapperConsumer) {
+        QueryWrapper<T> tQueryWrapper = new QueryWrapper<>();
+        queryWrapperConsumer.accept(tQueryWrapper);
+        return tQueryWrapper;
     }
 }

@@ -24,12 +24,12 @@ public class PostEntity implements Serializable {
     private String title;
     private String content;
     private Integer draft;
-    private Integer vote_up;
-    private Integer vote_down;
-    private Integer view_count;
-    private Integer comment_count;
-    private Date create_time;
-    private Date update_time;
+    private Integer voteUp;
+    private Integer voteDown;
+    private Integer viewCount;
+    private Integer commentCount;
+    private Date createTime;
+    private Date updateTime;
     private Integer del;
 
     @Override
@@ -50,12 +50,12 @@ public class PostEntity implements Serializable {
                 && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
                 && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
                 && (this.getDraft() == null ? other.getDraft() == null : this.getDraft().equals(other.getDraft()))
-                && (this.getVote_up() == null ? other.getVote_up() == null : this.getVote_up().equals(other.getVote_up()))
-                && (this.getVote_down() == null ? other.getVote_down() == null : this.getVote_down().equals(other.getVote_down()))
-                && (this.getView_count() == null ? other.getView_count() == null : this.getView_count().equals(other.getView_count()))
-                && (this.getComment_count() == null ? other.getComment_count() == null : this.getComment_count().equals(other.getComment_count()))
-                && (this.getCreate_time() == null ? other.getCreate_time() == null : this.getCreate_time().equals(other.getCreate_time()))
-                && (this.getUpdate_time() == null ? other.getUpdate_time() == null : this.getUpdate_time().equals(other.getUpdate_time()))
+                && (this.getVoteUp() == null ? other.getVoteUp() == null : this.getVoteUp().equals(other.getVoteUp()))
+                && (this.getVoteDown() == null ? other.getVoteDown() == null : this.getVoteDown().equals(other.getVoteDown()))
+                && (this.getViewCount() == null ? other.getViewCount() == null : this.getViewCount().equals(other.getViewCount()))
+                && (this.getCommentCount() == null ? other.getCommentCount() == null : this.getCommentCount().equals(other.getCommentCount()))
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
                 && (this.getDel() == null ? other.getDel() == null : this.getDel().equals(other.getDel()));
     }
 
@@ -69,12 +69,12 @@ public class PostEntity implements Serializable {
         result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
         result = prime * result + ((getContent() == null) ? 0 : getContent().hashCode());
         result = prime * result + ((getDraft() == null) ? 0 : getDraft().hashCode());
-        result = prime * result + ((getVote_up() == null) ? 0 : getVote_up().hashCode());
-        result = prime * result + ((getVote_down() == null) ? 0 : getVote_down().hashCode());
-        result = prime * result + ((getView_count() == null) ? 0 : getView_count().hashCode());
-        result = prime * result + ((getComment_count() == null) ? 0 : getComment_count().hashCode());
-        result = prime * result + ((getCreate_time() == null) ? 0 : getCreate_time().hashCode());
-        result = prime * result + ((getUpdate_time() == null) ? 0 : getUpdate_time().hashCode());
+        result = prime * result + ((getVoteUp() == null) ? 0 : getVoteUp().hashCode());
+        result = prime * result + ((getVoteDown() == null) ? 0 : getVoteDown().hashCode());
+        result = prime * result + ((getViewCount() == null) ? 0 : getViewCount().hashCode());
+        result = prime * result + ((getCommentCount() == null) ? 0 : getCommentCount().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getDel() == null) ? 0 : getDel().hashCode());
         return result;
     }
@@ -91,12 +91,12 @@ public class PostEntity implements Serializable {
         sb.append(", title=").append(title);
         sb.append(", content=").append(content);
         sb.append(", draft=").append(draft);
-        sb.append(", vote_up=").append(vote_up);
-        sb.append(", vote_down=").append(vote_down);
-        sb.append(", view_count=").append(view_count);
-        sb.append(", comment_count=").append(comment_count);
-        sb.append(", create_time=").append(create_time);
-        sb.append(", update_time=").append(update_time);
+        sb.append(", vote_up=").append(voteUp);
+        sb.append(", vote_down=").append(voteDown);
+        sb.append(", view_count=").append(viewCount);
+        sb.append(", comment_count=").append(commentCount);
+        sb.append(", create_time=").append(createTime);
+        sb.append(", update_time=").append(updateTime);
         sb.append(", del=").append(del);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="cn.enaium.community.model.entity.UserRoleRelationEntity">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="user_id" column="user_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="role_id" column="role_id" jdbcType="INTEGER"/>
     </resultMap>
 

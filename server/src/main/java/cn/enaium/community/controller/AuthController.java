@@ -28,14 +28,13 @@ import cn.enaium.community.model.entity.UserEntity;
 import cn.enaium.community.model.entity.UserRoleRelationEntity;
 import cn.enaium.community.model.result.Result;
 import cn.enaium.community.util.DigestUtil;
-import com.fasterxml.jackson.databind.JsonNode;
+import cn.enaium.community.util.ParamMap;
 import lombok.val;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+
+import static cn.enaium.community.util.WrapperUtil.queryWrapper;
 
 /**
  * @author Enaium
@@ -53,12 +52,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public Result<String> register(@RequestBody JsonNode param) {
-        val username = param.get("username").asText();
-        val password = param.get("password").asText();
-        val confirmPassword = param.get("confirm_password").asText();
+    public Result<String> register(@RequestParam ParamMap<String, Object> params) {
+        val username = params.getString("username");
+        val password = params.getString("password");
+        val confirmPassword = params.getString("confirm_password");
 
-        val userEntity = userMapper.selectByUsername(username);
+        val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
 
         if (userEntity != null) {
             return Result.fail(Result.Code.USERNAME_ALREADY_EXIST);
@@ -69,25 +68,25 @@ public class AuthController {
         val entity = new UserEntity();
         entity.setUsername(username);
         entity.setPassword(DigestUtil.md5(password));
-        entity.setCreate_time(new Date());
-        entity.setUpdate_time(new Date());
+        entity.setCreateTime(new Date());
+        entity.setUpdateTime(new Date());
 
         userMapper.insert(entity);
 
         val userRoleRelationEntity = new UserRoleRelationEntity();
-        userRoleRelationEntity.setUser_id(entity.getId());
+        userRoleRelationEntity.setUserId(entity.getId());
         userRoleRelationMapper.insert(userRoleRelationEntity);
 
         return Result.success();
     }
 
     @PostMapping("/login")
-    public Result<String> login(@RequestBody JsonNode param) {
+    public Result<String> login(@RequestParam ParamMap<String, Object> params) {
 
-        val username = param.get("username").asText();
-        val password = param.get("password").asText();
+        val username = params.getString("username");
+        val password = params.getString("password");
 
-        val userEntity = userMapper.selectByUsername(username);
+        val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
 
         if (userEntity == null) {
             return Result.fail(Result.Code.USERNAME_NOT_EXIST);
@@ -95,5 +94,15 @@ public class AuthController {
             return Result.fail(Result.Code.PASSWORD_NOT_MATCH);
         }
         return Result.success(StpUtil.createLoginSession(userEntity.getId()));
+    }
+
+    @GetMapping("/isLogin")
+    public Result<Boolean> isLogin() {
+        return Result.success(StpUtil.isLogin());
+    }
+
+    @GetMapping("/id")
+    public Result<Long> id() {
+        return Result.success(StpUtil.getLoginIdAsLong());
     }
 }

@@ -41,15 +41,15 @@ public class Result<T> {
         this.content = content;
     }
 
-    public static Result<String> fail() {
+    public static <T> Result<T> fail() {
         return new Result<>(false, Code.FAIL.code, Code.FAIL.message, null);
     }
 
-    public static Result<String> fail(Code code) {
+    public static <T> Result<T> fail(Code code) {
         return new Result<>(false, code.code, code.message, null);
     }
 
-    public static Result<String> success() {
+    public static <T> Result<T> success() {
         return new Result<>(true, Code.SUCCESS.getCode(), Code.SUCCESS.message, null);
     }
 

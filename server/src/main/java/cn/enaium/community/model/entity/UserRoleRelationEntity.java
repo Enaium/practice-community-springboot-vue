@@ -18,8 +18,8 @@ public class UserRoleRelationEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private Long user_id;
-    private Integer role_id;
+    private Long userId;
+    private Integer roleId;
 
     @Override
     public boolean equals(Object that) {
@@ -34,8 +34,8 @@ public class UserRoleRelationEntity implements Serializable {
         }
         UserRoleRelationEntity other = (UserRoleRelationEntity) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-                && (this.getUser_id() == null ? other.getUser_id() == null : this.getUser_id().equals(other.getUser_id()))
-                && (this.getRole_id() == null ? other.getRole_id() == null : this.getRole_id().equals(other.getRole_id()));
+                && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+                && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()));
     }
 
     @Override
@@ -43,8 +43,8 @@ public class UserRoleRelationEntity implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUser_id() == null) ? 0 : getUser_id().hashCode());
-        result = prime * result + ((getRole_id() == null) ? 0 : getRole_id().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getRoleId() == null) ? 0 : getRoleId().hashCode());
         return result;
     }
 
@@ -55,8 +55,8 @@ public class UserRoleRelationEntity implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", user_id=").append(user_id);
-        sb.append(", role_id=").append(role_id);
+        sb.append(", user_id=").append(userId);
+        sb.append(", role_id=").append(roleId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

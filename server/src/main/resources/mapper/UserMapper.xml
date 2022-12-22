@@ -9,11 +9,11 @@
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
             <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
-            <result property="post_count" column="post_count" jdbcType="INTEGER"/>
-            <result property="comment_count" column="comment_count" jdbcType="INTEGER"/>
+            <result property="postCount" column="post_count" jdbcType="INTEGER"/>
+            <result property="commentCount" column="comment_count" jdbcType="INTEGER"/>
             <result property="banned" column="banned" jdbcType="TINYINT"/>
-            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -21,9 +21,4 @@
         avatar,post_count,comment_count,
         banned,create_time,update_time
     </sql>
-    <select id="selectByUsername" resultMap="BaseResultMap">
-        select *
-        from user
-        where username = #{username}
-    </select>
 </mapper>

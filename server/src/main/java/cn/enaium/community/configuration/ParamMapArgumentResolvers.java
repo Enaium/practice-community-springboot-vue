@@ -19,30 +19,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-package cn.enaium.community.controller;
+package cn.enaium.community.configuration;
 
-import cn.enaium.community.model.result.Result;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import cn.enaium.community.util.ParamMap;
+import org.springframework.core.MethodParameter;
+import org.springframework.web.bind.support.WebDataBinderFactory;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.annotation.RequestParamMapMethodArgumentResolver;
+import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Enaium
  */
-@ControllerAdvice
-public class ExceptionController {
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    private Result<String> exception(HttpServletRequest request, Exception exception) {
-
-        if (exception instanceof HttpMessageNotReadableException) {
-            return Result.fail(Result.Code.PARAM_ERROR);
+public class ParamMapArgumentResolvers extends RequestParamMapMethodArgumentResolver {
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        if (parameter.getParameterType() == ParamMap.class) {
+            return new ParamMap<>((Map<?, ?>) super.resolveArgument(parameter, mavContainer, webRequest, binderFactory));
         }
-
-        exception.printStackTrace();
-        return Result.fail(Result.Code.FAIL);
+        return super.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
     }
 }

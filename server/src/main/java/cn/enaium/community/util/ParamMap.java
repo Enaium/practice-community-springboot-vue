@@ -19,30 +19,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-package cn.enaium.community.controller;
+package cn.enaium.community.util;
 
-import cn.enaium.community.model.result.Result;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Enaium
  */
-@ControllerAdvice
-public class ExceptionController {
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    private Result<String> exception(HttpServletRequest request, Exception exception) {
+public class ParamMap<K, V> extends java.util.HashMap<K, V> {
 
-        if (exception instanceof HttpMessageNotReadableException) {
-            return Result.fail(Result.Code.PARAM_ERROR);
-        }
+    public ParamMap() {
+    }
 
-        exception.printStackTrace();
-        return Result.fail(Result.Code.FAIL);
+    public ParamMap(Map<? extends K, ? extends V> m) {
+        super(m);
+    }
+
+    public Boolean getBoolean(K v) {
+        return Boolean.parseBoolean(String.valueOf(get(v)));
+    }
+
+    public Integer getInt(K v) {
+        return Integer.parseInt(String.valueOf(get(v)));
+    }
+
+    public Long getLong(K v) {
+        return Long.parseLong(String.valueOf(get(v)));
+    }
+
+    public String getString(K v) {
+        return String.valueOf(get(v));
     }
 }
