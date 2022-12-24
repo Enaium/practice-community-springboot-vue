@@ -41,13 +41,13 @@ const login = () => {
 <template>
   <div style="display:flex;flex-direction: column;justify-content:center;align-items: center;min-height: 100vh">
     <h1>Login</h1>
-    <n-card style="max-width: 300px;max-height: 300px">
+    <n-card style="max-width: 300px">
       <n-form ref="formRef" :model="data.form">
-        <n-form-item path="username" label="username">
+        <n-form-item path="username" label="Username">
           <n-input v-model:value="data.form.username"/>
         </n-form-item>
 
-        <n-form-item path="password" label="password">
+        <n-form-item path="password" label="Password">
           <n-input v-model:value="data.form.password"/>
         </n-form-item>
 
@@ -61,6 +61,13 @@ const login = () => {
         </n-button>
       </n-form>
     </n-card>
+    <p>
+      Don't have an
+      <router-link to="/register">
+        <n-gradient-text type="success">account</n-gradient-text>
+      </router-link>
+      yet?
+    </p>
   </div>
 </template>
 

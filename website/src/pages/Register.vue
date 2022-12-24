@@ -25,14 +25,14 @@ import http from "@/util/http";
 const data = reactive({
   form: {
     username: '',
-    password: ''
+    password: '',
+    confirm_password: ''
   }
 })
 
 const login = () => {
-  http.post("/auth/login", data.form).then(result => {
+  http.post("/auth/register", data.form).then(result => {
     if (result.data.code == 200) {
-      localStorage.setItem("token", result.data.content)
       window.$message.success(result.data.message)
     }
   })
@@ -41,14 +41,18 @@ const login = () => {
 <template>
   <div style="display:flex;flex-direction: column;justify-content:center;align-items: center;min-height: 100vh">
     <h1>Register</h1>
-    <n-card style="max-width: 300px;max-height: 300px">
+    <n-card style="max-width: 300px">
       <n-form ref="formRef" :model="data.form">
-        <n-form-item path="username" label="username">
+        <n-form-item path="username" label="Username">
           <n-input v-model:value="data.form.username"/>
         </n-form-item>
 
-        <n-form-item path="password" label="password">
+        <n-form-item path="password" label="Password">
           <n-input v-model:value="data.form.password"/>
+        </n-form-item>
+
+        <n-form-item path="confirm_password" label="Confirm Password">
+          <n-input v-model:value="data.form.confirm_password"/>
         </n-form-item>
 
         <n-button
@@ -57,10 +61,17 @@ const login = () => {
             @click="login"
             style="width: 100%"
         >
-          Login
+          Register
         </n-button>
       </n-form>
     </n-card>
+    <p>
+      Already have an
+      <router-link to="/login">
+        <n-gradient-text type="success">account</n-gradient-text>
+      </router-link>
+      ?
+    </p>
   </div>
 </template>
 

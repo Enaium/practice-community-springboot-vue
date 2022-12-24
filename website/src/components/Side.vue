@@ -40,7 +40,9 @@ onMounted(() => {
   <n-space vertical>
     <n-card title="Community" size="small">
       <div v-if="data.isLogin">
-        <n-button>Publish</n-button>
+        <router-link to="/publish">
+          <n-button>Publish</n-button>
+        </router-link>
       </div>
       <div v-else>
         You can
