@@ -22,6 +22,7 @@
 package cn.enaium.community.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.enaium.community.annotation.RequestParamMap;
 import cn.enaium.community.mapper.UserMapper;
 import cn.enaium.community.mapper.UserRoleRelationMapper;
 import cn.enaium.community.model.entity.UserEntity;
@@ -52,10 +53,18 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public Result<String> register(@RequestParam ParamMap<String, Object> params) {
+    public Result<String> register(@RequestParamMap ParamMap<String, Object> params) {
         val username = params.getString("username");
         val password = params.getString("password");
         val confirmPassword = params.getString("confirm_password");
+
+        if (username.isBlank()) {
+            return Result.fail(Result.Code.USERNAME_IS_BLANK);
+        }
+
+        if (password.isBlank()) {
+            return Result.fail(Result.Code.PASSWORD_IS_BLANK);
+        }
 
         val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
 
@@ -81,10 +90,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Result<String> login(@RequestParam ParamMap<String, Object> params) {
+    public Result<String> login(@RequestParamMap ParamMap<String, Object> params) {
 
         val username = params.getString("username");
         val password = params.getString("password");
+
+        if (username.isBlank()) {
+            return Result.fail(Result.Code.USERNAME_IS_BLANK);
+        }
+
+        if (password.isBlank()) {
+            return Result.fail(Result.Code.PASSWORD_IS_BLANK);
+        }
 
         val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
 

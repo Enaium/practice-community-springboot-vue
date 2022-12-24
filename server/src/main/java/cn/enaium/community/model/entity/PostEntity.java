@@ -19,8 +19,8 @@ public class PostEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Long user_id;
-    private Integer category_id;
+    private Long userId;
+    private Integer categoryId;
     private String title;
     private String content;
     private Integer draft;
@@ -45,8 +45,8 @@ public class PostEntity implements Serializable {
         }
         PostEntity other = (PostEntity) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-                && (this.getUser_id() == null ? other.getUser_id() == null : this.getUser_id().equals(other.getUser_id()))
-                && (this.getCategory_id() == null ? other.getCategory_id() == null : this.getCategory_id().equals(other.getCategory_id()))
+                && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+                && (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
                 && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
                 && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
                 && (this.getDraft() == null ? other.getDraft() == null : this.getDraft().equals(other.getDraft()))
@@ -64,8 +64,8 @@ public class PostEntity implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUser_id() == null) ? 0 : getUser_id().hashCode());
-        result = prime * result + ((getCategory_id() == null) ? 0 : getCategory_id().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getCategoryId() == null) ? 0 : getCategoryId().hashCode());
         result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
         result = prime * result + ((getContent() == null) ? 0 : getContent().hashCode());
         result = prime * result + ((getDraft() == null) ? 0 : getDraft().hashCode());
@@ -86,8 +86,8 @@ public class PostEntity implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", user_id=").append(user_id);
-        sb.append(", category_id=").append(category_id);
+        sb.append(", user_id=").append(userId);
+        sb.append(", category_id=").append(categoryId);
         sb.append(", title=").append(title);
         sb.append(", content=").append(content);
         sb.append(", draft=").append(draft);

@@ -31,6 +31,15 @@ public class ParamMap<K, V> extends java.util.HashMap<K, V> {
     public ParamMap() {
     }
 
+//    @Override
+//    public V get(Object key) {
+//        V v = super.get(key);
+//        if (v == null) {
+//            throw new NullPointerException();
+//        }
+//        return v;
+//    }
+
     public ParamMap(Map<? extends K, ? extends V> m) {
         super(m);
     }

@@ -21,24 +21,26 @@
 
 package cn.enaium.community.configuration;
 
-import cn.enaium.community.util.ParamMap;
-import org.springframework.core.MethodParameter;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.annotation.RequestParamMapMethodArgumentResolver;
-import org.springframework.web.method.support.ModelAndViewContainer;
+import cn.enaium.community.resolvers.ParamMapArgumentResolvers;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Enaium
  */
-public class ParamMapArgumentResolvers extends RequestParamMapMethodArgumentResolver {
+@Configuration
+public class ResolverConfiguration implements WebMvcConfigurer {
+    private final ParamMapArgumentResolvers paramMapArgumentResolvers;
+
+    public ResolverConfiguration(ParamMapArgumentResolvers paramMapArgumentResolvers) {
+        this.paramMapArgumentResolvers = paramMapArgumentResolvers;
+    }
+
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        if (parameter.getParameterType() == ParamMap.class) {
-            return new ParamMap<>((Map<?, ?>) super.resolveArgument(parameter, mavContainer, webRequest, binderFactory));
-        }
-        return super.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(paramMapArgumentResolvers);
     }
 }

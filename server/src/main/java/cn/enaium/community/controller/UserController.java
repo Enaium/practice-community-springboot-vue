@@ -22,6 +22,7 @@
 package cn.enaium.community.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.enaium.community.annotation.RequestParamMap;
 import cn.enaium.community.mapper.UserMapper;
 import cn.enaium.community.model.entity.UserEntity;
 import cn.enaium.community.model.result.Result;
@@ -46,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/info")
-    public Result<UserEntity> info(@RequestParam ParamMap<String, Object> params) {
+    public Result<UserEntity> info(@RequestParamMap ParamMap<String, Object> params) {
         if (params.containsKey("id")) {
             val user = userMapper.selectById(((params.getLong("id"))));
             if (user == null) {

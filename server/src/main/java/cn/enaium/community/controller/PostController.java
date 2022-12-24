@@ -21,6 +21,7 @@
 
 package cn.enaium.community.controller;
 
+import cn.enaium.community.annotation.RequestParamMap;
 import cn.enaium.community.mapper.CategoryMapper;
 import cn.enaium.community.mapper.PostMapper;
 import cn.enaium.community.model.entity.CategoryEntity;
@@ -66,7 +67,7 @@ public class PostController {
      * @return all post
      */
     @PostMapping("/posts")
-    public Result<List<PostEntity>> posts(@RequestBody ParamMap<String, Object> params) {
+    public Result<List<PostEntity>> posts(@RequestParamMap ParamMap<String, Object> params) {
         return Result.success(postMapper.selectList(queryWrapper(query -> {
             if (params.containsKey("category")) {
                 query.eq("category_id", params.getString("category"));

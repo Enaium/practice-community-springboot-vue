@@ -19,32 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-package cn.enaium.community.configuration;
+package cn.enaium.community.annotation;
 
-import cn.enaium.community.resolvers.ParamMapArgumentResolvers;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.val;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-
-import java.util.Collections;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Enaium
  */
-//@Configuration
-public class RequestMappingHandlerConfiguration {
-    private final RequestMappingHandlerAdapter requestMappingHandlerAdapter;
-    private final ParamMapArgumentResolvers paramMapArgumentResolvers = new ParamMapArgumentResolvers(new ObjectMapper());
-
-    public RequestMappingHandlerConfiguration(RequestMappingHandlerAdapter requestMappingHandlerAdapter) {
-        this.requestMappingHandlerAdapter = requestMappingHandlerAdapter;
-    }
-
-    @Bean
-    public ParamMapArgumentResolvers paramMapArgumentResolvers() {
-        requestMappingHandlerAdapter.setArgumentResolvers(Collections.singletonList(paramMapArgumentResolvers));
-        return paramMapArgumentResolvers;
-    }
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestParamMap {
 }

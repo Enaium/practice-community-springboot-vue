@@ -54,16 +54,16 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
                 return HandlerInterceptor.super.preHandle(request, response, handler);
             }
         });
-        registry.addInterceptor(new SaInterceptor(handle -> {
-            SaRouter.match("/**")
-                    .notMatch("/auth")
-                    .check(r -> {
-                        try {
-                            StpUtil.checkLogin();
-                        } catch (Throwable ignored) {
-
-                        }
-                    });
-        })).addPathPatterns("/**");
+//        registry.addInterceptor(new SaInterceptor(handle -> {
+//            SaRouter.match("/**")
+//                    .notMatch("/auth")
+//                    .check(r -> {
+//                        try {
+//                            StpUtil.checkLogin();
+//                        } catch (Throwable ignored) {
+//
+//                        }
+//                    });
+//        })).addPathPatterns("/**");
     }
 }

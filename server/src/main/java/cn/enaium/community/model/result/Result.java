@@ -66,9 +66,11 @@ public class Result<T> {
         FAIL(999, "Fail"),
         PARAM_ERROR(1001, "Param Error"),
         USER_NOT_LOGIN(2001, "User not login"),
-        USERNAME_ALREADY_EXIST(2002, "username already exist"),
-        USERNAME_NOT_EXIST(2003, "username not exist"),
-        PASSWORD_NOT_MATCH(20034, "password not match");
+        USERNAME_ALREADY_EXIST(2002, "Username already exist"),
+        USERNAME_NOT_EXIST(2003, "Username not exist"),
+        PASSWORD_NOT_MATCH(2004, "Password not match"),
+        USERNAME_IS_BLANK(2005, "Username is blank"),
+        PASSWORD_IS_BLANK(2005, "Password is blank");
 
         private final int code;
         private final String message;
