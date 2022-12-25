@@ -19,34 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-import axios from "axios";
-import {useRouter} from "vue-router";
+import http from "@/util/http";
 
-
-const http = axios.create({
-    baseURL: 'http://localhost:8080/api'
-})
-
-http.interceptors.request.use(config => {
-    if (localStorage.getItem("token")) {
-        config.headers!.token = localStorage.getItem("token")
-    }
-    return config
-}, error => Promise.reject(error))
-
-http.interceptors.response.use(response => {
-    if (response.data.code === 2001) {
-        useRouter().push({path: "/login"}).then(r => r)
-    }
-
-    if (response.data.code != 200) {
-        window.$message.error(response.data.message)
-    }
-
-    return response
-}, error => {
-    window.$message.error("Request Blocked")
-    Promise.reject(error).then(r => r)
-})
-
-export default http
+export const isLogin = async () => {
+    let is
+    await http.get('/auth/isLogin').then(r => {
+        is = r.data.content;
+    })
+    return is
+}

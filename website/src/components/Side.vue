@@ -19,7 +19,7 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import http from "@/util/http.js";
 import {onMounted, reactive} from "vue";
@@ -38,7 +38,7 @@ onMounted(() => {
 
 <template>
   <n-space vertical>
-    <n-card title="Community" size="small">
+    <n-card size="small" title="Community">
       <div v-if="data.isLogin">
         <router-link to="/publish">
           <n-button>Publish</n-button>

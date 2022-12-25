@@ -19,39 +19,39 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script setup lang="ts">
-import {onMounted, reactive, watch} from "vue";
+<script lang="ts" setup>
+import {onMounted, reactive} from "vue";
 import http from "@/util/http";
-
-const props = defineProps({
-  category: Object
-})
-
+import {diffDay, normalTime} from "@/util/time";
+import Avatar from "@/components/Avatar.vue";
 
 const data = reactive({
-  posts: []
-})
-
-const posts = (category: Object) => {
-  if (category) {
-    category = 1
+  info: {
+    username: undefined,
+    avatar: null,
+    post_count: 0,
+    comment_count: 0,
+    banned: 0,
+    createTime: new Date(),
+    updateTime: new Date()
   }
-  http.post("/post/posts", {category}).then(r => {
-    data.posts = r.data.content
-  })
-}
-
-watch(() => props.category, (category) => {
-  posts(category!)
 })
 
 onMounted(() => {
-  posts(props.category!)
+  http.post("/user/info").then(r => {
+    data.info = r.data.content
+  })
 })
+
 </script>
 <template>
+  <div style="display: flex">
+    <Avatar :avatar="data.info.avatar" :size="128"/>
+    <div style="display: flex;flex-direction: column;justify-content: space-between;font-size: 2em">
+      <div>Username:{{ data.info.username }}</div>
+      <div>Create Time:{{ normalTime(data.info.createTime) }}</div>
+      <div>Last Time:{{ normalTime(data.info.updateTime) }}({{ diffDay(data.info.updateTime, new Date()) }} Days)</div>
+    </div>
+  </div>
 
 </template>
-<style scoped>
-
-</style>

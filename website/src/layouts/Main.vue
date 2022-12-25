@@ -19,10 +19,9 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import Menu from "@/components/Menu.vue";
-import Side from "@/components/Side.vue";
-</script>
+import Side from "@/components/Side.vue";</script>
 
 <template>
   <n-layout>

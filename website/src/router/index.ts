@@ -24,8 +24,10 @@ import Login from '@/pages/Login.vue';
 import Home from "@/pages/Home.vue";
 import Register from "@/pages/Register.vue";
 import Publish from "@/pages/Publish.vue";
-import Profile from "@/components/Profile.vue";
+import Profile from "@/pages/Profile.vue";
 import Main from "@/layouts/Main.vue";
+import Logout from "@/pages/Logout.vue";
+import Post from "@/pages/Post.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -47,7 +49,18 @@ const routes: Array<RouteRecordRaw> = [
                 path: "/publish",
                 name: "publish",
                 component: Publish,
-            }]
+            },
+            {
+                path: "/logout",
+                name: "logout",
+                component: Logout
+            },
+            {
+                path: "/post",
+                name: "post",
+                component: Post
+            }
+        ]
     },
     {
         path: "/register",

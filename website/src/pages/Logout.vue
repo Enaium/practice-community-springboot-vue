@@ -19,38 +19,31 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script lang="ts" setup>
-import {onMounted, reactive} from "vue";
+<script setup lang="ts">
 import http from "@/util/http";
-import PostList from "@/components/post/PostList.vue";
-import {useRoute} from "vue-router";
 
-
-const data = reactive({
-  category: useRoute().query.category,
-  categories: []
-})
-
-onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
+const logout = () => {
+  http.get("/auth/logout").then(r => {
+    if (r.data.code == 200) {
+      window.$message.success("Logout successful")
+    }
   })
-})
+}
 
 </script>
-<template>
-  <n-button-group>
-    <n-tooltip v-for="category in data.categories" placement="top-start" trigger="hover">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
-</template>
 
+<template>
+  <n-space justify="center">
+    <n-popconfirm
+        @positive-click="logout"
+    >
+      <template #trigger>
+        <n-button type="error">Logout</n-button>
+      </template>
+      Do you want to logout?
+    </n-popconfirm>
+  </n-space>
+</template>
 
 <style scoped>
 

@@ -1,4 +1,5 @@
 /*
+ *
  * Copyright (c) 2022 Enaium
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,34 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-import axios from "axios";
-import {useRouter} from "vue-router";
+import dayjs from "dayjs";
 
+export const normalTime = (time: any) => {
+    return dayjs(time).format("YYYY-MM-DD HH:mm:ss")
+}
 
-const http = axios.create({
-    baseURL: 'http://localhost:8080/api'
-})
-
-http.interceptors.request.use(config => {
-    if (localStorage.getItem("token")) {
-        config.headers!.token = localStorage.getItem("token")
-    }
-    return config
-}, error => Promise.reject(error))
-
-http.interceptors.response.use(response => {
-    if (response.data.code === 2001) {
-        useRouter().push({path: "/login"}).then(r => r)
-    }
-
-    if (response.data.code != 200) {
-        window.$message.error(response.data.message)
-    }
-
-    return response
-}, error => {
-    window.$message.error("Request Blocked")
-    Promise.reject(error).then(r => r)
-})
-
-export default http
+export const diffDay = (past: any, now: any) => {
+    return dayjs(now).diff(dayjs(past), "day")
+}

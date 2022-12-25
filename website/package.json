@@ -9,12 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vavt/md-editor-extension": "^1.4.0",
     "axios": "^1.2.1",
+    "dayjs": "^1.11.7",
+    "md-editor-v3": "^2.7.1",
     "naive-ui": "^2.34.2",
     "vue": "^3.2.45",
     "vue-router": "4"
   },
   "devDependencies": {
+    "@types/marked": "^4.0.8",
     "@types/node": "^18.11.17",
     "@vitejs/plugin-vue": "^4.0.0",
     "typescript": "^4.9.3",

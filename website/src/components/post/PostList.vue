@@ -20,38 +20,40 @@
   -->
 
 <script lang="ts" setup>
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, watch} from "vue";
 import http from "@/util/http";
-import PostList from "@/components/post/PostList.vue";
-import {useRoute} from "vue-router";
+import PostItem from "@/components/post/PostItem.vue";
+
+const props = defineProps({
+  category: Object
+})
 
 
 const data = reactive({
-  category: useRoute().query.category,
-  categories: []
+  posts: []
+})
+
+const posts = (category: Object) => {
+  http.post("/post/posts", {category}).then(r => {
+    data.posts = r.data.content
+  })
+}
+
+watch(() => props.category, (category) => {
+  posts(category!)
 })
 
 onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
-  })
+  posts(props.category!)
 })
-
 </script>
 <template>
-  <n-button-group>
-    <n-tooltip v-for="category in data.categories" placement="top-start" trigger="hover">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
+  <n-list bordered>
+    <n-list-item v-for="post in data.posts">
+      <PostItem :data="post"/>
+    </n-list-item>
+  </n-list>
 </template>
-
-
 <style scoped>
 
 </style>

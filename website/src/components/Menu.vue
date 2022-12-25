@@ -19,38 +19,76 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script setup lang="ts">
-import {h} from 'vue'
+<script lang="ts" setup>
+import {h, onMounted, reactive} from 'vue'
 import type {MenuOption} from 'naive-ui'
 import Logo from '@/assets/vue.svg'
 import {RouterLink} from "vue-router";
+import {isLogin} from "@/util/request";
 
-const menuOptions: MenuOption[] = [
-  {
-    label: () =>
-        h(
-            RouterLink,
-            {
-              to: {
-                name: 'register'
-              }
-            },
-            {default: () => 'Register'}
-        )
-  },
-  {
-    label: () =>
-        h(
-            RouterLink,
-            {
-              to: {
-                name: 'login'
-              }
-            },
-            {default: () => 'Login'}
-        ),
-  }
-]
+const data = reactive({
+  menu: [] as MenuOption[]
+})
+
+onMounted(() => {
+  isLogin().then(isLogin => {
+    if (isLogin) {
+      data.menu = [
+        {
+          label: () =>
+              h(
+                  RouterLink,
+                  {
+                    to: {
+                      name: 'profile'
+                    }
+                  },
+                  {default: () => 'Profile'}
+              )
+        },
+        {
+          label: () =>
+              h(
+                  RouterLink,
+                  {
+                    to: {
+                      name: 'logout'
+                    }
+                  },
+                  {default: () => 'Logout'}
+              ),
+        }
+      ]
+    } else {
+      data.menu = [
+        {
+          label: () =>
+              h(
+                  RouterLink,
+                  {
+                    to: {
+                      name: 'register'
+                    }
+                  },
+                  {default: () => 'Register'}
+              )
+        },
+        {
+          label: () =>
+              h(
+                  RouterLink,
+                  {
+                    to: {
+                      name: 'login'
+                    }
+                  },
+                  {default: () => 'Login'}
+              ),
+        }
+      ]
+    }
+  })
+})
 </script>
 
 <template>
@@ -59,7 +97,7 @@ const menuOptions: MenuOption[] = [
         :src="Logo"
         @click="this.$router.push({path:'/'})"
     />
-    <n-menu mode="horizontal" :options="menuOptions"/>
+    <n-menu :options="data.menu" mode="horizontal"/>
   </n-space>
 </template>
 

@@ -18,9 +18,10 @@
   - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
-<script setup lang="ts">
+<script lang="ts" setup>
 import {reactive} from "vue";
 import http from "@/util/http";
+import router from "@/router";
 
 const data = reactive({
   form: {
@@ -33,6 +34,7 @@ const login = () => {
   http.post("/auth/login", data.form).then(result => {
     if (result.data.code == 200) {
       localStorage.setItem("token", result.data.content)
+      router.back()
       window.$message.success(result.data.message)
     }
   })
@@ -43,19 +45,19 @@ const login = () => {
     <h1>Login</h1>
     <n-card style="max-width: 300px">
       <n-form ref="formRef" :model="data.form">
-        <n-form-item path="username" label="Username">
+        <n-form-item label="Username" path="username">
           <n-input v-model:value="data.form.username"/>
         </n-form-item>
 
-        <n-form-item path="password" label="Password">
-          <n-input v-model:value="data.form.password"/>
+        <n-form-item label="Password" path="password">
+          <n-input v-model:value="data.form.password" type="password"/>
         </n-form-item>
 
         <n-button
             round
+            style="width: 100%"
             type="primary"
             @click="login"
-            style="width: 100%"
         >
           Login
         </n-button>

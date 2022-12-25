@@ -19,7 +19,7 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {useMessage} from "naive-ui";
 
 window.$message = useMessage()

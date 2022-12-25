@@ -19,10 +19,68 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import {onMounted, reactive} from 'vue';
+import MdEditor from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
+import http from "@/util/http";
+
+const data = reactive({
+  options: [] as any,
+  post: {
+    category_id: 1,
+    title: '',
+    content: '# Hello Markdown Editor',
+    draft: true
+  }
+})
+
+onMounted(() => {
+  http.get("/post/categories").then(r => {
+    r.data.content.forEach((element: { title: string; id: number; }) => {
+      data.options.push({
+        label: element.title,
+        value: element.id
+      })
+    })
+  })
+})
+
+const publish = () => {
+  http.post("/post/publish", data.post).then(r => {
+    console.log(r.data.content);
+  })
+}
 
 </script>
 
 <template>
-  <h1>Publish</h1>
+  <n-form>
+
+    <n-form-item label="Category" path="category">
+      <n-select
+          v-model:value="data.post.category_id"
+          :options="data.options"
+          placeholder="Select Category"
+      />
+    </n-form-item>
+
+    <n-form-item label="Title" path="title">
+      <n-input v-model:value="data.post.title"/>
+    </n-form-item>
+
+    <n-form-item label="Content" path="content">
+      <md-editor v-model="data.post.content"/>
+    </n-form-item>
+
+    <n-form-item label="Draft" path="draft">
+      <n-switch v-model:value="data.post.draft"/>
+    </n-form-item>
+
+    <div style="display: flex;flex-direction: row-reverse">
+      <n-button round type="primary" @click="publish">
+        Publish
+      </n-button>
+    </div>
+  </n-form>
 </template>

@@ -20,38 +20,48 @@
   -->
 
 <script lang="ts" setup>
+import {normalTime} from "@/util/time";
+import Avatar from "@/components/Avatar.vue";
 import {onMounted, reactive} from "vue";
 import http from "@/util/http";
-import PostList from "@/components/post/PostList.vue";
-import {useRoute} from "vue-router";
+import {useRouter} from "vue-router";
+const router = useRouter();
 
+const props = defineProps<{
+  data: {
+    id: Number,
+    title: String,
+    userId: Number,
+    commentCount: Number,
+    viewCount: Number,
+    updateTime: Date
+  }
+}>()
 
 const data = reactive({
-  category: useRoute().query.category,
-  categories: []
+  avatar: undefined
 })
 
 onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
+  http.post("/user/info", {id: props.data.userId}).then(r => {
+    data.avatar = r.data.content.avatar
   })
 })
 
 </script>
+
 <template>
-  <n-button-group>
-    <n-tooltip v-for="category in data.categories" placement="top-start" trigger="hover">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
+  <n-space justify="space-between" align="center">
+    <n-space align="center">
+      <Avatar :size="48" :avatar="data.avatar"/>
+      <div>{{ props.data.commentCount }}/{{ props.data.viewCount }}</div>
+      <div @click="router.push({name:'post',query:{id:props.data.id}})">
+        {{ props.data.title }}
+      </div>
+    </n-space>
+
+    <div>
+      {{ normalTime(props.data.updateTime) }}
+    </div>
+  </n-space>
 </template>
-
-
-<style scoped>
-
-</style>

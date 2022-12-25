@@ -21,6 +21,7 @@
 
 import {
     create,
+    NAvatar,
     NButton,
     NButtonGroup,
     NCard,
@@ -40,36 +41,37 @@ import {
     NGradientText,
     NGrid,
     NGridItem,
+    NImage,
     NInput,
     NInputGroup,
     NInputNumber,
+    NLayout,
+    NLayoutContent,
+    NLayoutFooter,
+    NLayoutHeader,
+    NLayoutSider,
     NList,
     NListItem,
     NLoadingBarProvider,
-    NModal,
     NMenu,
     NMessageProvider,
+    NModal,
     NNotificationProvider,
+    NPopconfirm,
     NPopover,
     NScrollbar,
     NSelect,
     NSpace,
+    NSpin,
     NStatistic,
     NSwitch,
-    NSpin,
-    NTabs,
     NTabPane,
+    NTabs,
     NTag,
     NThing,
     NTimeline,
     NTimelineItem,
-    NTooltip,
-    NLayout,
-    NLayoutSider,
-    NLayoutHeader,
-    NLayoutFooter,
-    NLayoutContent,
-    NImage
+    NTooltip
 } from 'naive-ui'
 
 export default create({
@@ -122,6 +124,8 @@ export default create({
         NLayoutHeader,
         NLayoutFooter,
         NLayoutContent,
-        NImage
+        NImage,
+        NAvatar,
+        NPopconfirm
     ]
 })

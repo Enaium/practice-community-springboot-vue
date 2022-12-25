@@ -20,38 +20,19 @@
   -->
 
 <script lang="ts" setup>
-import {onMounted, reactive} from "vue";
-import http from "@/util/http";
-import PostList from "@/components/post/PostList.vue";
-import {useRoute} from "vue-router";
+import avatar from "@/assets/avatar.jpg"
 
 
-const data = reactive({
-  category: useRoute().query.category,
-  categories: []
-})
-
-onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
-  })
-})
-
+const props = defineProps<{
+  avatar: Object,
+  size: Number
+}>()
 </script>
+
 <template>
-  <n-button-group>
-    <n-tooltip v-for="category in data.categories" placement="top-start" trigger="hover">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
+  <n-avatar
+      style="border: whitesmoke 1px solid"
+      :size="size"
+      :src="props.avatar === null ? avatar : props.avatar"
+  />
 </template>
-
-
-<style scoped>
-
-</style>

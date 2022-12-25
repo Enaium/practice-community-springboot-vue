@@ -23,37 +23,27 @@
 import {onMounted, reactive} from "vue";
 import {useRoute} from "vue-router";
 import http from "@/util/http";
+import MdEditor from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
 
 const data = reactive({
-  id: useRoute().query.id,
-  me: false,
-  info: {
-    username: null,
-    avatar: null,
-    post_count: 0,
-    comment_count: 0,
-    banned: 0,
-    create_time: new Date(),
-    update_time: new Date()
-  }
+  post: {}
 })
 
 onMounted(() => {
-  if (data.id) {
-    http.post("/user/info", {
-      id: data.id
-    }).then(r => {
-      data.info = r.data.content
-    })
-  } else {
-    data.me = true
-    http.post("/user/info").then(r => {
-      data.info = r.data.content
-    })
-  }
+  http.post("/post/post", {id: useRoute().query.id}).then(r => {
+    data.post = r.data.content
+  })
 })
-
 </script>
+
 <template>
-  <h1>{{ data.info.username }}</h1>
+  <div>
+    {{ data.post.title }}
+  </div>
+  <md-editor v-model="data.post.content" preview-only/>
 </template>
+
+<style scoped>
+
+</style>
