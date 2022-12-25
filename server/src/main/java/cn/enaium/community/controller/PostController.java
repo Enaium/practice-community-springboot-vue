@@ -21,6 +21,7 @@
 
 package cn.enaium.community.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.enaium.community.annotation.RequestParamMap;
 import cn.enaium.community.mapper.CategoryMapper;
 import cn.enaium.community.mapper.PostMapper;
@@ -28,8 +29,10 @@ import cn.enaium.community.model.entity.CategoryEntity;
 import cn.enaium.community.model.entity.PostEntity;
 import cn.enaium.community.model.result.Result;
 import cn.enaium.community.util.ParamMap;
+import lombok.val;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 import static cn.enaium.community.util.WrapperUtil.queryWrapper;
@@ -77,5 +80,51 @@ public class PostController {
                 query.eq("user_id", params.getString("user"));
             }
         })));
+    }
+
+    @PostMapping("/publish")
+    public Result<Object> publish(@RequestParamMap ParamMap<String, Object> params) {
+
+        val categoryId = params.getInt("category_id");
+        val title = params.getString("title");
+        val content = params.getString("content");
+        val draft = params.getBoolean("draft");
+
+        if (title.isBlank()) {
+            return Result.fail(Result.Code.TITLE_BLANK);
+        }
+
+        if (title.isBlank()) {
+            return Result.fail(Result.Code.CONTENT_BLANK);
+        }
+
+        if (categoryMapper.selectById(categoryId) == null) {
+            return Result.fail(Result.Code.CATEGORY_NOT_EXIST);
+        }
+
+        val postEntity = new PostEntity();
+
+        postEntity.setUserId(StpUtil.getLoginIdAsLong());
+        postEntity.setCategoryId(categoryId);
+        postEntity.setTitle(title);
+        postEntity.setContent(content);
+        postEntity.setDraft(draft);
+
+        postEntity.setUpdateTime(new Date());
+
+        if (params.containsKey("id")) {
+            postEntity.setId(params.getLong("id"));
+            postMapper.updateById(postEntity);
+        } else {
+            postEntity.setCreateTime(new Date());
+            postMapper.insert(postEntity);
+        }
+        return Result.success();
+    }
+
+    @PostMapping("/post")
+    public Result<PostEntity> post(@RequestParamMap ParamMap<String, Object> params) {
+        val id = params.getLong("id");
+        return Result.success(postMapper.selectById(id));
     }
 }

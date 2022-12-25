@@ -55,7 +55,11 @@ public class ParamMapArgumentResolvers implements HandlerMethodArgumentResolver 
     @Override
     public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NotNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest nativeRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        return objectMapper.readValue(nativeRequest.getReader(), ParamMap.class);
+        String content = nativeRequest.getReader().lines().collect(Collectors.joining());
+        if (content.isBlank()) {
+            content = "{}";
+        }
+        return objectMapper.readValue(content, ParamMap.class);
     }
 
     private static boolean isParamMap(MethodParameter parameter) {

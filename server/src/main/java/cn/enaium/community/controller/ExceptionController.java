@@ -21,7 +21,11 @@
 
 package cn.enaium.community.controller;
 
+import cn.dev33.satoken.exception.NotLoginException;
+import cn.enaium.community.exception.KeyNotExistException;
+import cn.enaium.community.exception.ValueNullException;
 import cn.enaium.community.model.result.Result;
+import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,8 +42,12 @@ public class ExceptionController {
     @ResponseBody
     private Result<String> exception(HttpServletRequest request, Exception exception) {
 
-        if (exception instanceof HttpMessageNotReadableException) {
+
+        if (exception instanceof HttpMessageNotReadableException || exception instanceof JsonParseException || exception instanceof KeyNotExistException || exception instanceof ValueNullException) {
+            exception.printStackTrace();
             return Result.fail(Result.Code.PARAM_ERROR);
+        } else if (exception instanceof NotLoginException) {
+            return Result.fail(Result.Code.USER_NOT_LOGIN);
         }
 
         exception.printStackTrace();

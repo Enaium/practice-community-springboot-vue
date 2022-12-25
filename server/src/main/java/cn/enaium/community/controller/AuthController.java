@@ -59,11 +59,11 @@ public class AuthController {
         val confirmPassword = params.getString("confirm_password");
 
         if (username.isBlank()) {
-            return Result.fail(Result.Code.USERNAME_IS_BLANK);
+            return Result.fail(Result.Code.USERNAME_BLANK);
         }
 
         if (password.isBlank()) {
-            return Result.fail(Result.Code.PASSWORD_IS_BLANK);
+            return Result.fail(Result.Code.PASSWORD_BLANK);
         }
 
         val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
@@ -96,11 +96,11 @@ public class AuthController {
         val password = params.getString("password");
 
         if (username.isBlank()) {
-            return Result.fail(Result.Code.USERNAME_IS_BLANK);
+            return Result.fail(Result.Code.USERNAME_BLANK);
         }
 
         if (password.isBlank()) {
-            return Result.fail(Result.Code.PASSWORD_IS_BLANK);
+            return Result.fail(Result.Code.PASSWORD_BLANK);
         }
 
         val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
@@ -110,7 +110,18 @@ public class AuthController {
         } else if (!DigestUtil.md5(password).equals(userEntity.getPassword())) {
             return Result.fail(Result.Code.PASSWORD_NOT_MATCH);
         }
+
+        userEntity.setUpdateTime(new Date());
+
+        userMapper.updateById(userEntity);
+
         return Result.success(StpUtil.createLoginSession(userEntity.getId()));
+    }
+
+    @GetMapping("/logout")
+    public Result<Object> logout() {
+        StpUtil.logout();
+        return Result.success();
     }
 
     @GetMapping("/isLogin")

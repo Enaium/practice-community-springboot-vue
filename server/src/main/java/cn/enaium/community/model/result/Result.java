@@ -69,8 +69,11 @@ public class Result<T> {
         USERNAME_ALREADY_EXIST(2002, "Username already exist"),
         USERNAME_NOT_EXIST(2003, "Username not exist"),
         PASSWORD_NOT_MATCH(2004, "Password not match"),
-        USERNAME_IS_BLANK(2005, "Username is blank"),
-        PASSWORD_IS_BLANK(2005, "Password is blank");
+        USERNAME_BLANK(2005, "Username is blank"),
+        PASSWORD_BLANK(2006, "Password is blank"),
+        TITLE_BLANK(2007, "Title is blank"),
+        CONTENT_BLANK(2008, "Content is blank"),
+        CATEGORY_NOT_EXIST(2009, "Category not exist");
 
         private final int code;
         private final String message;

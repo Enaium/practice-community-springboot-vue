@@ -23,7 +23,7 @@ public class PostEntity implements Serializable {
     private Integer categoryId;
     private String title;
     private String content;
-    private Integer draft;
+    private Boolean draft;
     private Integer voteUp;
     private Integer voteDown;
     private Integer viewCount;

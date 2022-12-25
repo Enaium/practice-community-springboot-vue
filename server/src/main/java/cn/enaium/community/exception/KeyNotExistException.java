@@ -19,52 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-package cn.enaium.community.util;
-
-import cn.enaium.community.exception.KeyNotExistException;
-import cn.enaium.community.exception.ValueNullException;
-
-import java.util.Map;
+package cn.enaium.community.exception;
 
 /**
  * @author Enaium
  */
-public class ParamMap<K, V> extends java.util.HashMap<K, V> {
-
-    public ParamMap() {
-    }
-
-    @Override
-    public V get(Object key) {
-
-        if (!containsKey(key)) {
-            throw new KeyNotExistException(key);
-        }
-
-        V v = super.get(key);
-        if (v == null) {
-            throw new ValueNullException(key);
-        }
-        return v;
-    }
-
-    public ParamMap(Map<? extends K, ? extends V> m) {
-        super(m);
-    }
-
-    public Boolean getBoolean(K v) {
-        return Boolean.parseBoolean(String.valueOf(get(v)));
-    }
-
-    public Integer getInt(K v) {
-        return Integer.parseInt(String.valueOf(get(v)));
-    }
-
-    public Long getLong(K v) {
-        return Long.parseLong(String.valueOf(get(v)));
-    }
-
-    public String getString(K v) {
-        return String.valueOf(get(v));
+public class KeyNotExistException extends NullPointerException {
+    public KeyNotExistException(Object key) {
+        super("The key '%s' doesn't exist".formatted(key));
     }
 }
