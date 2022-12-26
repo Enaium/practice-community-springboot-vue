@@ -34,20 +34,6 @@ public class ParamMap<K, V> extends java.util.HashMap<K, V> {
     public ParamMap() {
     }
 
-    @Override
-    public V get(Object key) {
-
-        if (!containsKey(key)) {
-            throw new KeyNotExistException(key);
-        }
-
-        V v = super.get(key);
-        if (v == null) {
-            throw new ValueNullException(key);
-        }
-        return v;
-    }
-
     public ParamMap(Map<? extends K, ? extends V> m) {
         super(m);
     }
@@ -65,6 +51,6 @@ public class ParamMap<K, V> extends java.util.HashMap<K, V> {
     }
 
     public String getString(K v) {
-        return String.valueOf(get(v));
+        return (String) get(v);
     }
 }

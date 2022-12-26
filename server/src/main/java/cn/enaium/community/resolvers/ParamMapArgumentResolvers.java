@@ -47,6 +47,10 @@ public class ParamMapArgumentResolvers implements HandlerMethodArgumentResolver 
         this.objectMapper = objectMapper;
     }
 
+    private static boolean isParamMap(MethodParameter parameter) {
+        return parameter.getParameterType() == ParamMap.class && parameter.hasParameterAnnotation(RequestParamMap.class);
+    }
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return isParamMap(parameter);
@@ -60,9 +64,5 @@ public class ParamMapArgumentResolvers implements HandlerMethodArgumentResolver 
             content = "{}";
         }
         return objectMapper.readValue(content, ParamMap.class);
-    }
-
-    private static boolean isParamMap(MethodParameter parameter) {
-        return parameter.getParameterType() == ParamMap.class && parameter.hasParameterAnnotation(RequestParamMap.class);
     }
 }

@@ -5,12 +5,13 @@
 <mapper namespace="cn.enaium.community.mapper.UserRoleRelationMapper">
 
     <resultMap id="BaseResultMap" type="cn.enaium.community.model.entity.UserRoleRelationEntity">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="userId" column="user_id" jdbcType="BIGINT"/>
-            <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="roleId" column="role_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,user_id,role_id
+        id
+        ,user_id,role_id
     </sql>
 </mapper>

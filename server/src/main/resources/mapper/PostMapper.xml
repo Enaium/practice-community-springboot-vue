@@ -5,23 +5,24 @@
 <mapper namespace="cn.enaium.community.mapper.PostMapper">
 
     <resultMap id="BaseResultMap" type="cn.enaium.community.model.entity.PostEntity">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="userId" column="user_id" jdbcType="BIGINT"/>
-            <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
-            <result property="title" column="title" jdbcType="VARCHAR"/>
-            <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="draft" column="draft" jdbcType="TINYINT"/>
-            <result property="voteUp" column="vote_up" jdbcType="INTEGER"/>
-            <result property="voteDown" column="vote_down" jdbcType="INTEGER"/>
-            <result property="viewCount" column="view_count" jdbcType="INTEGER"/>
-            <result property="commentCount" column="comment_count" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="del" column="del" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="draft" column="draft" jdbcType="TINYINT"/>
+        <result property="voteUp" column="vote_up" jdbcType="INTEGER"/>
+        <result property="voteDown" column="vote_down" jdbcType="INTEGER"/>
+        <result property="viewCount" column="view_count" jdbcType="INTEGER"/>
+        <result property="commentCount" column="comment_count" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="del" column="del" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,user_id,category_id,
+        id
+        ,user_id,category_id,
         title,content,draft,
         vote_up,vote_down,view_count,
         comment_count,create_time,update_time,

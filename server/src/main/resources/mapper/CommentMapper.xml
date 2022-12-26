@@ -5,19 +5,20 @@
 <mapper namespace="cn.enaium.community.mapper.CommentMapper">
 
     <resultMap id="BaseResultMap" type="cn.enaium.community.model.entity.CommentEntity">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="userId" column="user_id" jdbcType="BIGINT"/>
-            <result property="postId" column="post_id" jdbcType="BIGINT"/>
-            <result property="voteUp" column="vote_up" jdbcType="INTEGER"/>
-            <result property="voteDown" column="vote_down" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="answer" column="answer" jdbcType="TINYINT"/>
-            <result property="del" column="del" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="postId" column="post_id" jdbcType="BIGINT"/>
+        <result property="voteUp" column="vote_up" jdbcType="INTEGER"/>
+        <result property="voteDown" column="vote_down" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="answer" column="answer" jdbcType="TINYINT"/>
+        <result property="del" column="del" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,user_id,post_id,
+        id
+        ,user_id,post_id,
         vote_up,vote_down,create_time,
         update_time,answer,del
     </sql>

@@ -31,7 +31,10 @@ import cn.enaium.community.model.result.Result;
 import cn.enaium.community.util.DigestUtil;
 import cn.enaium.community.util.ParamMap;
 import lombok.val;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
@@ -69,7 +72,7 @@ public class AuthController {
         val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
 
         if (userEntity != null) {
-            return Result.fail(Result.Code.USERNAME_ALREADY_EXIST);
+            return Result.fail(Result.Code.USER_ALREADY_EXIST);
         } else if (!password.equals(confirmPassword)) {
             return Result.fail(Result.Code.PASSWORD_NOT_MATCH);
         }
@@ -106,7 +109,7 @@ public class AuthController {
         val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
 
         if (userEntity == null) {
-            return Result.fail(Result.Code.USERNAME_NOT_EXIST);
+            return Result.fail(Result.Code.USER_NOT_EXIST);
         } else if (!DigestUtil.md5(password).equals(userEntity.getPassword())) {
             return Result.fail(Result.Code.PASSWORD_NOT_MATCH);
         }

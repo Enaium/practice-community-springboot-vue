@@ -19,32 +19,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-package cn.enaium.community.configuration;
+package cn.enaium.community.util;
 
-import cn.enaium.community.resolvers.ParamMapArgumentResolvers;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.val;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-
-import java.util.Collections;
+import cn.dev33.satoken.stp.StpUtil;
 
 /**
  * @author Enaium
  */
-//@Configuration
-public class RequestMappingHandlerConfiguration {
-    private final RequestMappingHandlerAdapter requestMappingHandlerAdapter;
-    private final ParamMapArgumentResolvers paramMapArgumentResolvers = new ParamMapArgumentResolvers(new ObjectMapper());
+public class AuthUtil {
+    public static long getId() {
+        long id = 0;
+        try {
+            id = StpUtil.getLoginIdAsLong();
+        } catch (Exception exception) {
 
-    public RequestMappingHandlerConfiguration(RequestMappingHandlerAdapter requestMappingHandlerAdapter) {
-        this.requestMappingHandlerAdapter = requestMappingHandlerAdapter;
-    }
-
-    @Bean
-    public ParamMapArgumentResolvers paramMapArgumentResolvers() {
-        requestMappingHandlerAdapter.setArgumentResolvers(Collections.singletonList(paramMapArgumentResolvers));
-        return paramMapArgumentResolvers;
+        }
+        return id;
     }
 }

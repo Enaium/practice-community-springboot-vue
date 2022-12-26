@@ -66,14 +66,16 @@ public class Result<T> {
         FAIL(999, "Fail"),
         PARAM_ERROR(1001, "Param Error"),
         USER_NOT_LOGIN(2001, "User not login"),
-        USERNAME_ALREADY_EXIST(2002, "Username already exist"),
-        USERNAME_NOT_EXIST(2003, "Username not exist"),
+        USER_ALREADY_EXIST(2002, "User already exist"),
+        USER_NOT_EXIST(2003, "User not exist"),
         PASSWORD_NOT_MATCH(2004, "Password not match"),
         USERNAME_BLANK(2005, "Username is blank"),
         PASSWORD_BLANK(2006, "Password is blank"),
         TITLE_BLANK(2007, "Title is blank"),
         CONTENT_BLANK(2008, "Content is blank"),
-        CATEGORY_NOT_EXIST(2009, "Category not exist");
+        CATEGORY_NOT_EXIST(2009, "Category not exist"),
+        POST_NOT_EXIST(2010, "Post not exist"),
+        NO_PERMISSION(3001, "No Permission");
 
         private final int code;
         private final String message;

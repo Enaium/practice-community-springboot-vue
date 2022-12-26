@@ -23,8 +23,13 @@ package cn.enaium.community.configuration;
 
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
+import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.enaium.community.mapper.PermissionMapper;
+import cn.enaium.community.mapper.RoleMapper;
+import cn.enaium.community.model.entity.PermissionEntity;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -32,6 +37,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Enaium
@@ -54,16 +62,31 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
                 return HandlerInterceptor.super.preHandle(request, response, handler);
             }
         });
-//        registry.addInterceptor(new SaInterceptor(handle -> {
-//            SaRouter.match("/**")
-//                    .notMatch("/auth")
-//                    .check(r -> {
-//                        try {
-//                            StpUtil.checkLogin();
-//                        } catch (Throwable ignored) {
-//
-//                        }
-//                    });
-//        })).addPathPatterns("/**");
+        registry.addInterceptor(new SaInterceptor(handle -> {
+            SaRouter.match("/**")
+                    .notMatch("/auth")
+                    .check(r -> {
+                        try {
+                            StpUtil.checkLogin();
+                        } catch (Throwable ignored) {
+
+                        }
+                    });
+        })).addPathPatterns("/**");
+    }
+
+    @Bean
+    public StpInterface stpInterface(RoleMapper roleMapper, PermissionMapper permissionMapper) {
+        return new StpInterface() {
+            @Override
+            public List<String> getPermissionList(Object loginId, String loginType) {
+                return permissionMapper.selectListByUserId(Long.parseLong(String.valueOf(loginId))).stream().map(PermissionEntity::getName).collect(Collectors.toList());
+            }
+
+            @Override
+            public List<String> getRoleList(Object loginId, String loginType) {
+                return Collections.singletonList(roleMapper.selectByUserId(Long.parseLong(String.valueOf(loginId))).getName());
+            }
+        };
     }
 }

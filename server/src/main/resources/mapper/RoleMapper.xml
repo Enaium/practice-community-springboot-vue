@@ -5,11 +5,18 @@
 <mapper namespace="cn.enaium.community.mapper.RoleMapper">
 
     <resultMap id="BaseResultMap" type="cn.enaium.community.model.entity.RoleEntity">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name
+        id
+        ,name
     </sql>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select *
+        from role
+                 join user_role_relation urr on role.id = urr.role_id
+        where urr.user_id = #{userId};
+    </select>
 </mapper>
