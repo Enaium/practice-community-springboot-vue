@@ -20,7 +20,6 @@
  */
 
 import axios from "axios";
-import {useRouter} from "vue-router";
 
 
 const http = axios.create({
@@ -36,7 +35,7 @@ http.interceptors.request.use(config => {
 
 http.interceptors.response.use(response => {
     if (response.data.code === 2001) {
-        useRouter().push({path: "/login"}).then(r => r)
+        window.$router.push({path: "/login"})
     }
 
     if (response.data.code != 200) {

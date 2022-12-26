@@ -35,16 +35,33 @@ onMounted(() => {
     if (isLogin) {
       data.menu = [
         {
-          label: () =>
-              h(
-                  RouterLink,
-                  {
-                    to: {
-                      name: 'profile'
-                    }
-                  },
-                  {default: () => 'Profile'}
-              )
+          label: "Me",
+          children: [
+            {
+              label: () =>
+                  h(
+                      RouterLink,
+                      {
+                        to: {
+                          name: 'profile'
+                        }
+                      },
+                      {default: () => 'Profile'}
+                  )
+            },
+            {
+              label: () =>
+                  h(
+                      RouterLink,
+                      {
+                        to: {
+                          name: 'space'
+                        }
+                      },
+                      {default: () => 'Space'}
+                  )
+            }
+          ]
         },
         {
           label: () =>

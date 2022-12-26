@@ -21,37 +21,49 @@
 
 <script lang="ts" setup>
 import {onMounted, reactive} from "vue";
-import http from "@/util/http";
-import {diffDay, normalTime} from "@/util/time";
 import Avatar from "@/components/Avatar.vue";
+import {userInfo} from "@/util/request";
+import http from "@/util/http";
 
 const data = reactive({
   info: {
     username: undefined,
-    avatar: null,
-    post_count: 0,
-    comment_count: 0,
-    banned: 0,
-    createTime: new Date(),
-    updateTime: new Date()
-  }
+    avatar: null
+  } as any
 })
 
 onMounted(() => {
-  http.post("/user/info").then(r => {
-    data.info = r.data.content
+  userInfo().then(info => {
+    data.info = info
   })
 })
 
+const update = () => {
+  http.post("/user/update", data.info).then(r => {
+    if (r.data.code == 200) {
+      window.$message.success("Update successful")
+    }
+  })
+}
+
 </script>
 <template>
-  <div style="display: flex">
-    <Avatar :avatar="data.info.avatar" :size="128"/>
-    <div style="display: flex;flex-direction: column;justify-content: space-between;font-size: 2em">
-      <div>Username:{{ data.info.username }}</div>
-      <div>Create Time:{{ normalTime(data.info.createTime) }}</div>
-      <div>Last Time:{{ normalTime(data.info.updateTime) }}({{ diffDay(data.info.updateTime, new Date()) }} Days)</div>
+  <div style="display:flex;flex-direction:column;gap: 10px">
+    <div style="display: flex;justify-content: center">
+      <Avatar :avatar="data.info.avatar" :size="128"/>
     </div>
-  </div>
+    <n-form ref="formRef" :model="data.info" label-placement="left" label-width="auto">
+      <n-form-item label="Username" path="username">
+        <n-input v-model:value="data.info.username"/>
+      </n-form-item>
 
+      <n-form-item label="Avtar" path="avatar">
+        <n-input v-model:value="data.info.avatar"/>
+      </n-form-item>
+
+      <n-button type="primary" style="width: 100%" @click="update">
+        Confirm
+      </n-button>
+    </n-form>
+  </div>
 </template>

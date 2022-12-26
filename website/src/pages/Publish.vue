@@ -24,11 +24,15 @@ import {onMounted, reactive} from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import http from "@/util/http";
+import {useRoute, useRouter} from "vue-router";
+
+const router = useRouter()
+const route = useRoute()
 
 const data = reactive({
   options: [] as any,
   post: {
-    category_id: 1,
+    categoryId: 1,
     title: '',
     content: '# Hello Markdown Editor',
     draft: true
@@ -44,11 +48,20 @@ onMounted(() => {
       })
     })
   })
+
+  if (route.query.id) {
+    http.post("/post/info", {id: route.query.id}).then(r => {
+      data.post = r.data.content
+    })
+  }
 })
 
 const publish = () => {
   http.post("/post/publish", data.post).then(r => {
-    console.log(r.data.content);
+    if (r.data.code == 200) {
+      window.$message.success(r.data.message)
+      router.back()
+    }
   })
 }
 
@@ -59,7 +72,7 @@ const publish = () => {
 
     <n-form-item label="Category" path="category">
       <n-select
-          v-model:value="data.post.category_id"
+          v-model:value="data.post.categoryId"
           :options="data.options"
           placeholder="Select Category"
       />

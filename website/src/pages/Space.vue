@@ -19,38 +19,58 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script lang="ts" setup>
+<script setup lang="ts">
+import {useRoute, useRouter} from "vue-router";
 import {onMounted, reactive} from "vue";
-import http from "@/util/http";
+import {id, userInfo} from "@/util/request";
+import {diffDay, normalTime} from "@/util/time";
+import Avatar from "@/components/Avatar.vue";
 import PostList from "@/components/post/PostList.vue";
-import {useRoute} from "vue-router";
 
+const route = useRoute()
+const router = useRouter()
 
 const data = reactive({
-  category: 1,
-  categories: []
+  info: {} as any
 })
 
 onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
-  })
+  if (route.query.id) {
+    userInfo(route.query.id).then(info => {
+      data.info = info
+    })
+  } else {
+    id().then(id => {
+      userInfo(id).then(info => {
+        data.info = info
+      })
+    })
+  }
 })
 
 </script>
-<template>
-  <n-button-group>
-    <n-tooltip v-for="category in data.categories" placement="top-start" trigger="hover">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
-</template>
 
+<template>
+  <div style="display: flex">
+    <Avatar :avatar="data.info.avatar" :size="128"/>
+    <div style="display: flex;flex-direction: column;justify-content: space-between;font-size: 2em">
+      <div>Username:{{ data.info.username }}</div>
+      <div>Create Time:{{ normalTime(data.info.createTime) }}</div>
+      <div>Update Time:{{ normalTime(data.info.updateTime) }}({{ diffDay(data.info.updateTime, new Date()) }} Days)
+      </div>
+    </div>
+  </div>
+  <n-divider/>
+  <div style="display: flex;align-content: center;gap: 5px">
+    <n-tag type="success">Post:{{ data.info.postCount }}</n-tag>
+    <n-tag type="success">Comment:{{ data.info.commentCount }}</n-tag>
+    <n-tag type="error" v-if="data.info.banned">
+      Banned
+    </n-tag>
+  </div>
+  <n-divider></n-divider>
+  <PostList :user="data.info.id" v-if="data.info.id"/>
+</template>
 
 <style scoped>
 

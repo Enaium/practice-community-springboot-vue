@@ -21,25 +21,42 @@
 
 <script setup lang="ts">
 import {onMounted, reactive} from "vue";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import http from "@/util/http";
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
+import {userInfo} from "@/util/request";
+
+const router = useRouter()
+const route = useRoute()
 
 const data = reactive({
-  post: {}
+  post: {} as any,
+  me: false
 })
 
 onMounted(() => {
-  http.post("/post/post", {id: useRoute().query.id}).then(r => {
+  http.post("/post/info", {id: route.query.id}).then(r => {
     data.post = r.data.content
+    userInfo().then((info: any) => {
+      if (info.id === data.post.userId) {
+        data.me = true
+      }
+    })
   })
 })
 </script>
 
 <template>
-  <div>
-    {{ data.post.title }}
+  <div style="display: flex;justify-content: space-between">
+    <div>
+      {{ data.post.title }}
+    </div>
+    <div v-if="data.me">
+      <n-button type="primary" @click="router.push({name:'publish', query:{id:route.query.id}})">
+        Edit
+      </n-button>
+    </div>
   </div>
   <md-editor v-model="data.post.content" preview-only/>
 </template>

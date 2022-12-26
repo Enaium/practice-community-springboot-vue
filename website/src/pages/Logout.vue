@@ -21,11 +21,14 @@
 
 <script setup lang="ts">
 import http from "@/util/http";
+import {useRouter} from "vue-router";
+const router = useRouter()
 
 const logout = () => {
   http.get("/auth/logout").then(r => {
     if (r.data.code == 200) {
       window.$message.success("Logout successful")
+      router.back()
     }
   })
 }

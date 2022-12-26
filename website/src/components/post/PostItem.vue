@@ -20,16 +20,18 @@
   -->
 
 <script lang="ts" setup>
-import {normalTime} from "@/util/time";
 import Avatar from "@/components/Avatar.vue";
 import {onMounted, reactive} from "vue";
 import http from "@/util/http";
 import {useRouter} from "vue-router";
+import {normalTime} from "@/util/time";
+
 const router = useRouter();
 
 const props = defineProps<{
   data: {
     id: Number,
+    draft: Boolean,
     title: String,
     userId: Number,
     commentCount: Number,
@@ -51,17 +53,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-space justify="space-between" align="center">
-    <n-space align="center">
-      <Avatar :size="48" :avatar="data.avatar"/>
+  <div style="display: flex;justify-content:space-between;align-items: center">
+    <div style="display: flex;align-items: center;gap: 10px">
+      <Avatar :size="48" :avatar="data.avatar" @click="router.push({name:'space', query:{id:props.data.userId}})"/>
       <div>{{ props.data.commentCount }}/{{ props.data.viewCount }}</div>
-      <div @click="router.push({name:'post',query:{id:props.data.id}})">
+      <div @click="router.push({name:'post', query:{id:props.data.id}})">
         {{ props.data.title }}
       </div>
-    </n-space>
+    </div>
 
-    <div>
+    <div style="display: flex;align-items: center;gap: 10px">
+      <n-tag type="warning" v-if="props.data.draft">
+        Draft
+      </n-tag>
       {{ normalTime(props.data.updateTime) }}
     </div>
-  </n-space>
+  </div>
 </template>

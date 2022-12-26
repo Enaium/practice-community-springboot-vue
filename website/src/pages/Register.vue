@@ -21,6 +21,9 @@
 <script lang="ts" setup>
 import {reactive} from "vue";
 import http from "@/util/http";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 
 const data = reactive({
   form: {
@@ -34,6 +37,7 @@ const login = () => {
   http.post("/auth/register", data.form).then(result => {
     if (result.data.code == 200) {
       window.$message.success(result.data.message)
+      router.push({path: '/login'})
     }
   })
 }

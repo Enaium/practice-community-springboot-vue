@@ -21,6 +21,8 @@
 
 <script lang="ts" setup>
 import {useMessage} from "naive-ui";
+import {useRouter} from "vue-router";
 
 window.$message = useMessage()
+window.$router = useRouter()
 </script>

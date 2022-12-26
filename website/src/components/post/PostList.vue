@@ -25,7 +25,8 @@ import http from "@/util/http";
 import PostItem from "@/components/post/PostItem.vue";
 
 const props = defineProps({
-  category: Object
+  category: Number,
+  user: Number
 })
 
 
@@ -33,8 +34,8 @@ const data = reactive({
   posts: []
 })
 
-const posts = (category: Object) => {
-  http.post("/post/posts", {category}).then(r => {
+const posts = (categoryId: any, userId?: any) => {
+  http.post("/post/posts", {categoryId, userId}).then(r => {
     data.posts = r.data.content
   })
 }
@@ -44,7 +45,7 @@ watch(() => props.category, (category) => {
 })
 
 onMounted(() => {
-  posts(props.category!)
+  posts(props.category, props.user)
 })
 </script>
 <template>

@@ -21,13 +21,12 @@
 
 <script lang="ts" setup>
 import Menu from "@/components/Menu.vue";
-import Side from "@/components/Side.vue";</script>
+import Side from "@/components/Side.vue";
+import Footer from "@/components/Footer.vue";</script>
 
 <template>
-  <n-layout>
-    <n-layout-header>
-      <Menu/>
-    </n-layout-header>
+  <div style="display: flex;flex-direction: column;min-height: 100vh">
+    <Menu/>
     <n-layout has-sider>
       <n-layout-content content-style="padding: 24px;">
         <n-card>
@@ -38,14 +37,13 @@ import Side from "@/components/Side.vue";</script>
         <Side/>
       </n-layout-sider>
     </n-layout>
-    <n-layout-footer>Chengfu Road</n-layout-footer>
-  </n-layout>
+    <Footer/>
+  </div>
 </template>
 
 <style scoped>
 .n-layout {
   padding: 0 !important;
   margin: 0 !important;
-  height: 100vh;
 }
 </style>

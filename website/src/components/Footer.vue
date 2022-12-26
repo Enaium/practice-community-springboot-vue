@@ -19,38 +19,16 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script lang="ts" setup>
-import {onMounted, reactive} from "vue";
-import http from "@/util/http";
-import PostList from "@/components/post/PostList.vue";
-import {useRoute} from "vue-router";
-
-
-const data = reactive({
-  category: 1,
-  categories: []
-})
-
-onMounted(() => {
-  http.get("/post/categories").then(r => {
-    data.categories = r.data.content
-  })
-})
+<script setup lang="ts">
 
 </script>
-<template>
-  <n-button-group>
-    <n-tooltip v-for="category in data.categories" placement="top-start" trigger="hover">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
-</template>
 
+<template>
+<div style="display: flex;flex-direction: column;align-items: center">
+  <p>Copyright &copy; 2022 Enaium</p>
+  <p>Released under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
+</div>
+</template>
 
 <style scoped>
 

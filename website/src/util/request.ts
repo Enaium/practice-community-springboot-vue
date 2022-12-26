@@ -23,8 +23,24 @@ import http from "@/util/http";
 
 export const isLogin = async () => {
     let is
-    await http.get('/auth/isLogin').then(r => {
+    await http.get("/auth/isLogin").then(r => {
         is = r.data.content;
     })
     return is
+}
+
+export const userInfo = async (id?: any) => {
+    let info
+    await http.post("/user/info", {id}).then(r => {
+        info = r.data.content
+    })
+    return info
+}
+
+export const id = async () => {
+    let id
+    await http.get("/auth/id").then(r => {
+        id = r.data.content
+    })
+    return id
 }
