@@ -31,6 +31,7 @@ import cn.enaium.community.model.entity.PostEntity;
 import cn.enaium.community.model.result.Result;
 import cn.enaium.community.util.AuthUtil;
 import cn.enaium.community.util.ParamMap;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.val;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,8 +80,8 @@ public class PostController {
      * @return all post
      */
     @PostMapping("/posts")
-    public Result<List<PostEntity>> posts(@RequestParamMap ParamMap<String, Object> params) {
-        return Result.success(postMapper.selectList(queryWrapper(query -> {
+    public Result<Page<PostEntity>> posts(@RequestParamMap ParamMap<String, Object> params) {
+        val postEntityPage = postMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(query -> {
 
             query.eq("del", false);
 
@@ -111,7 +112,8 @@ public class PostController {
             if (noDraft) {
                 query.eq("draft", false);
             }
-        })));
+        }));
+        return Result.success(postEntityPage);
     }
 
     @PostMapping("/publish")

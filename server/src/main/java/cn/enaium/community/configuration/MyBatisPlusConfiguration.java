@@ -19,51 +19,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  */
 
-package cn.enaium.community.util;
+package cn.enaium.community.configuration;
 
-import java.util.Map;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Enaium
  */
-public class ParamMap<K, V> extends java.util.HashMap<K, V> {
-
-    public ParamMap() {
-    }
-
-    public ParamMap(Map<? extends K, ? extends V> m) {
-        super(m);
-    }
-
-    public Boolean getBoolean(K k) {
-        return Boolean.parseBoolean(String.valueOf(get(k)));
-    }
-
-    public Integer getInt(K k) {
-        return Integer.parseInt(String.valueOf(get(k)));
-    }
-
-    public Long getLong(K k) {
-        return Long.parseLong(String.valueOf(get(k)));
-    }
-
-    public String getString(K k) {
-        return (String) get(k);
-    }
-
-    public Boolean getBoolean(K k, V v) {
-        return Boolean.parseBoolean(String.valueOf(getOrDefault(k, v)));
-    }
-
-    public Integer getInt(K k, V v) {
-        return Integer.parseInt(String.valueOf(getOrDefault(k, v)));
-    }
-
-    public Long getLong(K k, V v) {
-        return Long.parseLong(String.valueOf(getOrDefault(k, v)));
-    }
-
-    public String getString(K k, V v) {
-        return (String) getOrDefault(k, v);
+@Configuration
+public class MyBatisPlusConfiguration {
+    @Bean
+    public MybatisPlusInterceptor mybatis() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+        interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+        return interceptor;
     }
 }
