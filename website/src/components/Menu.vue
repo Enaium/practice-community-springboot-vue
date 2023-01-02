@@ -47,7 +47,8 @@ onMounted(() => {
                         }
                       },
                       {default: () => 'Profile'}
-                  )
+                  ),
+              key: "me-profile"
             },
             {
               label: () =>
@@ -59,9 +60,11 @@ onMounted(() => {
                         }
                       },
                       {default: () => 'Space'}
-                  )
+                  ),
+              key: "me-space"
             }
-          ]
+          ],
+          key: "me"
         },
         {
           label: () =>
@@ -74,6 +77,7 @@ onMounted(() => {
                   },
                   {default: () => 'Logout'}
               ),
+          key: "logout"
         }
       ]
     } else {
@@ -88,7 +92,8 @@ onMounted(() => {
                     }
                   },
                   {default: () => 'Register'}
-              )
+              ),
+          key: "register"
         },
         {
           label: () =>
@@ -101,6 +106,7 @@ onMounted(() => {
                   },
                   {default: () => 'Login'}
               ),
+          key: "login"
         }
       ]
     }

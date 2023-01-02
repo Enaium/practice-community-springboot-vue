@@ -20,25 +20,39 @@
   -->
 
 <script setup lang="ts">
+import {ref} from "vue";
+import http from "@/util/http";
 
-import BackendMenu from "@/components/BackendMenu.vue";</script>
+const user = ref(0)
+const ban = () => {
+  http.post("/user/ban", {id: user.value, ban: true})
+}
+
+const unban = () => {
+  http.post("/user/ban", {id: user.value, ban: false})
+}
+</script>
 
 <template>
-  <div style="height: 100vh; position: relative">
-    <n-layout position="absolute">
-      <n-layout-header style="height: 64px; padding: 24px" bordered>
-        Backend
-      </n-layout-header>
-      <n-layout has-sider position="absolute" style="top: 64px">
-        <n-layout-sider bordered content-style="padding: 24px;">
-          <BackendMenu/>
-        </n-layout-sider>
-        <n-layout content-style="padding: 24px;">
-          <router-view/>
-        </n-layout>
-      </n-layout>
-    </n-layout>
-  </div>
+  <n-form>
+    <n-form-item label="Ban ID" path="banId">
+      <n-input-number v-model:value="user" clearable/>
+    </n-form-item>
+    <n-button
+        round
+        type="error"
+        @click="ban"
+    >
+      Ban
+    </n-button>
+    <n-button
+        round
+        type="success"
+        @click="unban"
+    >
+      Unban
+    </n-button>
+  </n-form>
 </template>
 
 <style scoped>

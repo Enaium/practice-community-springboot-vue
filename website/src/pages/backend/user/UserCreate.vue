@@ -18,66 +18,52 @@
   - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
-<script lang="ts" setup>
+
+<script setup lang="ts">
 import {reactive} from "vue";
 import http from "@/util/http";
-import {useRouter} from "vue-router";
-
-const router = useRouter()
 
 const data = reactive({
   form: {
     username: '',
     password: '',
     confirmPassword: ''
-  }
+  },
 })
 
-const register = () => {
+const create = () => {
   http.post("/auth/register", data.form).then(result => {
     if (result.data.code == 200) {
       window.$message.success(result.data.message)
-      router.push({path: '/login'})
     }
   })
 }
 </script>
+
 <template>
-  <div style="display:flex;flex-direction: column;justify-content:center;align-items: center;min-height: 100vh">
-    <h1>Register</h1>
-    <n-card style="max-width: 300px">
-      <n-form ref="formRef" :model="data.form">
-        <n-form-item label="Username" path="username">
-          <n-input v-model:value="data.form.username"/>
-        </n-form-item>
+  <n-form>
+    <n-form-item label="Username" path="username">
+      <n-input v-model:value="data.form.username"/>
+    </n-form-item>
 
-        <n-form-item label="Password" path="password">
-          <n-input v-model:value="data.form.password" type="password"/>
-        </n-form-item>
+    <n-form-item label="Password" path="password">
+      <n-input v-model:value="data.form.password" type="password"/>
+    </n-form-item>
 
-        <n-form-item label="Confirm Password" path="confirmPassword">
-          <n-input v-model:value="data.form.confirmPassword" type="password"/>
-        </n-form-item>
+    <n-form-item label="Confirm Password" path="confirmPassword">
+      <n-input v-model:value="data.form.confirmPassword" type="password"/>
+    </n-form-item>
 
-        <n-button
-            round
-            style="width: 100%"
-            type="primary"
-            @click="register"
-        >
-          Register
-        </n-button>
-      </n-form>
-    </n-card>
-    <p>
-      Already have an
-      <router-link to="/login">
-        <n-gradient-text type="success">account</n-gradient-text>
-      </router-link>
-      ?
-    </p>
-  </div>
+    <n-button
+        round
+        type="primary"
+        @click="create"
+    >
+      Register
+    </n-button>
+  </n-form>
 </template>
 
 <style scoped>
+
 </style>

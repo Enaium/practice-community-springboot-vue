@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <h1>User</h1>
+<div>RoleList</div>
 </template>
 
 <style scoped>

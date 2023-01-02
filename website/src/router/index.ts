@@ -31,7 +31,12 @@ import Post from "@/pages/main/Post.vue";
 import Space from "@/pages/main/Space.vue";
 import Backend from "@/layouts/Backend.vue";
 import Welcome from "@/pages/backend/Welcome.vue";
-import User from "@/pages/backend/User.vue";
+import UserList from "@/pages/backend/user/UserList.vue";
+import UserRole from "@/pages/backend/user/UserRole.vue";
+import RoleList from "@/pages/backend/role/RoleList.vue";
+import RolePermission from "@/pages/backend/role/RolePermission.vue";
+import UserCreate from "@/pages/backend/user/UserCreate.vue";
+import UserBan from "@/pages/backend/user/UserBan.vue";
 
 
 const router = createRouter({
@@ -85,9 +90,34 @@ const router = createRouter({
                     component: Welcome
                 },
                 {
-                    path: "user",
-                    name: "user",
-                    component: User
+                    path: "user/list",
+                    name: "user-list",
+                    component: UserList
+                },
+                {
+                    path: "user/create",
+                    name: "user-create",
+                    component: UserCreate
+                },
+                {
+                    path: "user/ban",
+                    name: "user-ban",
+                    component: UserBan
+                },
+                {
+                    path: "user/role",
+                    name: "user-role",
+                    component: UserRole
+                },
+                {
+                    path: "role/list",
+                    name: "role-list",
+                    component: RoleList
+                },
+                {
+                    path: "role/permission",
+                    name: "role-permission",
+                    component: RolePermission
                 }
             ]
         },
