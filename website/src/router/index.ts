@@ -21,14 +21,17 @@
 
 import {createRouter, createWebHistory} from "vue-router";
 import Login from '@/pages/Login.vue';
-import Home from "@/pages/Home.vue";
+import Home from "@/pages/main/Home.vue";
 import Register from "@/pages/Register.vue";
-import Publish from "@/pages/Publish.vue";
-import Profile from "@/pages/Profile.vue";
+import Publish from "@/pages/main/Publish.vue";
+import Profile from "@/pages/main/Profile.vue";
 import Main from "@/layouts/Main.vue";
-import Logout from "@/pages/Logout.vue";
-import Post from "@/pages/Post.vue";
-import Space from "@/pages/Space.vue";
+import Logout from "@/pages/main/Logout.vue";
+import Post from "@/pages/main/Post.vue";
+import Space from "@/pages/main/Space.vue";
+import Backend from "@/layouts/Backend.vue";
+import Welcome from "@/pages/backend/Welcome.vue";
+import User from "@/pages/backend/User.vue";
 
 
 const router = createRouter({
@@ -40,34 +43,51 @@ const router = createRouter({
             component: Main,
             children: [
                 {
-                    path: "/",
+                    path: "",
                     name: "home",
                     component: Home,
                 },
                 {
-                    path: "/profile",
+                    path: "profile",
                     name: "profile",
                     component: Profile,
                 },
                 {
-                    path: "/publish",
+                    path: "publish",
                     name: "publish",
                     component: Publish,
                 },
                 {
-                    path: "/logout",
+                    path: "logout",
                     name: "logout",
                     component: Logout
                 },
                 {
-                    path: "/post",
+                    path: "post",
                     name: "post",
                     component: Post
                 },
                 {
-                    path: "/space",
+                    path: "space",
                     name: "space",
                     component: Space
+                }
+            ]
+        },
+        {
+            path: "/backend",
+            name: "backend",
+            component: Backend,
+            children: [
+                {
+                    path: "",
+                    name: "welcome",
+                    component: Welcome
+                },
+                {
+                    path: "user",
+                    name: "user",
+                    component: User
                 }
             ]
         },
