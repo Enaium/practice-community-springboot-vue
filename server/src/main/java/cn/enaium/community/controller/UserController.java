@@ -21,19 +21,22 @@
 
 package cn.enaium.community.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.enaium.community.annotation.RequestParamMap;
 import cn.enaium.community.mapper.UserMapper;
 import cn.enaium.community.model.entity.UserEntity;
 import cn.enaium.community.model.result.Result;
-import cn.enaium.community.util.AuthUtil;
 import cn.enaium.community.util.ParamMap;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.val;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+
+import static cn.enaium.community.util.WrapperUtil.queryWrapper;
 
 /**
  * @author Enaium
@@ -89,5 +92,29 @@ public class UserController {
         }
         userEntity.setUpdateTime(new Date());
         return Result.success(userMapper.updateById(userEntity));
+    }
+
+    /**
+     * get all user
+     *
+     * @param params map param
+     * @return all user
+     */
+    @PostMapping("/users")
+    @SaCheckPermission("user.query")
+    public Result<Page<UserEntity>> users(@RequestParamMap ParamMap<String, Object> params) {
+        return Result.success(userMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(query -> {
+
+        })));
+    }
+
+    @PostMapping("/ban")
+    @SaCheckPermission("user.ban")
+    public Result<Object> ban(@RequestParamMap ParamMap<String, Object> params) {
+        val entity = new UserEntity();
+        entity.setId(params.getLong("id"));
+        entity.setBanned(params.getBoolean("ban"));
+        userMapper.updateById(entity);
+        return Result.success();
     }
 }

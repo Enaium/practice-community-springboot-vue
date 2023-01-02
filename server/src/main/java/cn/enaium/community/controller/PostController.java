@@ -81,8 +81,7 @@ public class PostController {
      */
     @PostMapping("/posts")
     public Result<Page<PostEntity>> posts(@RequestParamMap ParamMap<String, Object> params) {
-        val postEntityPage = postMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(query -> {
-
+        return Result.success(postMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(query -> {
             query.eq("del", false);
 
             boolean noDraft = true;
@@ -112,8 +111,7 @@ public class PostController {
             if (noDraft) {
                 query.eq("draft", false);
             }
-        }));
-        return Result.success(postEntityPage);
+        })));
     }
 
     @PostMapping("/publish")

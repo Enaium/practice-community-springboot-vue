@@ -65,6 +65,7 @@ public class Result<T> {
         SUCCESS(200, "success"),
         FAIL(999, "Fail"),
         PARAM_ERROR(1001, "Param Error"),
+        METHOD_NOT_SUPPORT(1002, "method not support"),
         USER_NOT_LOGIN(2001, "User not login"),
         USER_ALREADY_EXIST(2002, "User already exist"),
         USER_NOT_EXIST(2003, "User not exist"),

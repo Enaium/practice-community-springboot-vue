@@ -59,7 +59,7 @@ public class AuthController {
     public Result<String> register(@RequestParamMap ParamMap<String, Object> params) {
         val username = params.getString("username");
         val password = params.getString("password");
-        val confirmPassword = params.getString("confirm_password");
+        val confirmPassword = params.getString("confirmPassword");
 
         if (username.isBlank()) {
             return Result.fail(Result.Code.USERNAME_BLANK);
