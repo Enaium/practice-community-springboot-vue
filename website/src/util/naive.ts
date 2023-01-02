@@ -57,6 +57,7 @@ import {
     NMessageProvider,
     NModal,
     NNotificationProvider,
+    NPagination,
     NPopconfirm,
     NPopover,
     NScrollbar,
@@ -126,6 +127,7 @@ export default create({
         NLayoutContent,
         NImage,
         NAvatar,
-        NPopconfirm
+        NPopconfirm,
+        NPagination
     ]
 })

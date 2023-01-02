@@ -31,29 +31,51 @@ const props = defineProps({
 
 
 const data = reactive({
-  posts: []
+  post: {
+    records: [],
+    pages: 1,
+    current: 1
+  }
 })
 
 const posts = (categoryId: any, userId?: any) => {
-  http.post("/post/posts", {categoryId, userId}).then(r => {
-    data.posts = r.data.content
+  http.post("/post/posts", {
+    categoryId,
+    userId,
+    current: data.post.current
+  }).then(r => {
+    data.post = r.data.content
   })
 }
 
+const refresh = () => {
+  posts(props.category, props.user)
+}
+
 watch(() => props.category, (category) => {
-  posts(category!)
+  posts(category, props.user)
 })
 
+const page = (page: number) => {
+  data.post.current = page
+  refresh()
+}
+
+
 onMounted(() => {
-  posts(props.category, props.user)
+  refresh()
 })
+
 </script>
 <template>
   <n-list bordered>
-    <n-list-item v-for="post in data.posts">
+    <n-list-item v-for="post in data.post.records">
       <PostItem :data="post"/>
     </n-list-item>
   </n-list>
+  <div style="display: flex;justify-content: center">
+    <n-pagination v-model:page="data.post.current" :page-count="data.post.pages" :on-update:page="page"/>
+  </div>
 </template>
 <style scoped>
 
