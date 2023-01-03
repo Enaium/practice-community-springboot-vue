@@ -24,9 +24,11 @@ package cn.enaium.community.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.enaium.community.annotation.RequestParamMap;
+import cn.enaium.community.mapper.RoleMapper;
 import cn.enaium.community.mapper.UserMapper;
 import cn.enaium.community.model.entity.UserEntity;
 import cn.enaium.community.model.result.Result;
+import cn.enaium.community.util.AuthUtil;
 import cn.enaium.community.util.ParamMap;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.val;
@@ -46,9 +48,11 @@ import static cn.enaium.community.util.WrapperUtil.queryWrapper;
 public class UserController {
 
     private final UserMapper userMapper;
+    private final RoleMapper roleMapper;
 
-    public UserController(UserMapper userMapper) {
+    public UserController(UserMapper userMapper, RoleMapper roleMapper) {
         this.userMapper = userMapper;
+        this.roleMapper = roleMapper;
     }
 
     @PostMapping("/info")
@@ -68,27 +72,44 @@ public class UserController {
 
     @PostMapping("/update")
     public Result<Object> update(@RequestParamMap ParamMap<String, Object> params) {
-//        val id = params.getLong("id");
+        val id = params.getLong("id", AuthUtil.getId());
 
-//        if (id != AuthUtil.getId()) {
-//            return Result.fail(Result.Code.NO_PERMISSION);
-//        }
-
-        val userEntity = userMapper.selectById(StpUtil.getLoginIdAsLong());
-        if (userEntity == null) {
+        if (userMapper.selectById(id) == null) {
             return Result.fail(Result.Code.USER_NOT_EXIST);
         }
 
-        if (params.containsKey("avatar")) {
+        if (StpUtil.hasRole("user")) {
+            if (!id.equals(AuthUtil.getId())) {
+                return Result.fail(Result.Code.NO_PERMISSION);
+            }
+        }
+
+        val userEntity = new UserEntity();
+
+        userEntity.setId(id);
+
+        if (params.has("avatar")) {
             val avatar = params.getString("avatar");
             userEntity.setAvatar((avatar == null || avatar.isBlank()) ? null : avatar);
         }
 
-        if (params.containsKey("username")) {
+        if (params.has("username")) {
             val username = params.getString("username");
+
+            if (userMapper.selectOne(queryWrapper(query -> query.eq("username", username))) != null) {
+                return Result.fail(Result.Code.USER_ALREADY_EXIST);
+            }
+
             if (!username.isBlank()) {
                 userEntity.setUsername(username);
             }
+        }
+
+        if (params.has("ban")) {
+            StpUtil.checkPermission("user.ban");
+            val ban = params.getBoolean("ban");
+            userEntity.setBanned(ban);
+            roleMapper.updateByUserId(id, ban ? 4 : 3);
         }
         userEntity.setUpdateTime(new Date());
         return Result.success(userMapper.updateById(userEntity));
@@ -106,15 +127,5 @@ public class UserController {
         return Result.success(userMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(query -> {
 
         })));
-    }
-
-    @PostMapping("/ban")
-    @SaCheckPermission("user.ban")
-    public Result<Object> ban(@RequestParamMap ParamMap<String, Object> params) {
-        val entity = new UserEntity();
-        entity.setId(params.getLong("id"));
-        entity.setBanned(params.getBoolean("ban"));
-        userMapper.updateById(entity);
-        return Result.success();
     }
 }

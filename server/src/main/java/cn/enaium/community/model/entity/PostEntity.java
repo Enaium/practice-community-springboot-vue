@@ -30,7 +30,7 @@ public class PostEntity implements Serializable {
     private Integer commentCount;
     private Date createTime;
     private Date updateTime;
-    private Integer del;
+    private Boolean del;
 
     @Override
     public boolean equals(Object that) {

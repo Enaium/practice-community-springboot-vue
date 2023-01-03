@@ -66,4 +66,7 @@ public class ParamMap<K, V> extends java.util.HashMap<K, V> {
     public String getString(K k, V v) {
         return (String) getOrDefault(k, v);
     }
+    public boolean has(Object key) {
+        return super.containsKey(key);
+    }
 }

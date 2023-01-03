@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface RoleMapper extends BaseMapper<RoleEntity> {
     RoleEntity selectByUserId(Long userId);
+    void updateByUserId(Long userId, Integer id);
 }
 
 

@@ -21,15 +21,18 @@
 
 package cn.enaium.community.controller;
 
+import cn.enaium.community.annotation.RequestParamMap;
 import cn.enaium.community.mapper.RoleMapper;
 import cn.enaium.community.model.entity.RoleEntity;
 import cn.enaium.community.model.result.Result;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import cn.enaium.community.util.ParamMap;
+import lombok.val;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static cn.enaium.community.util.WrapperUtil.queryWrapper;
+import java.util.List;
 
 /**
  * @author Enaium
@@ -44,10 +47,25 @@ public class RoleController {
         this.roleMapper = roleMapper;
     }
 
-    @PostMapping("/roles")
-    public Result<Page<RoleEntity>> roles() {
-        return Result.success(roleMapper.selectPage(new Page<>(1, 10), queryWrapper(r -> {
+    @PostMapping("/user")
+    public Result<RoleEntity> user(@RequestParamMap ParamMap<String, Object> params) {
+        val roleEntity = roleMapper.selectByUserId(params.getLong("id"));
+        if (roleEntity == null) {
+            return Result.fail(Result.Code.USER_NOT_EXIST);
+        }
+        return Result.success(roleEntity);
+    }
 
-        })));
+    @PostMapping("/update")
+    public Result<Object> update(@RequestParamMap ParamMap<String, Object> params) {
+        val id = params.getLong("id");
+        val role = params.getInt("role");
+        roleMapper.updateByUserId(id, role);
+        return Result.success();
+    }
+
+    @GetMapping("/roles")
+    public Result<List<RoleEntity>> roles() {
+        return Result.success(roleMapper.selectList(null));
     }
 }

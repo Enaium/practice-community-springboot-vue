@@ -22,6 +22,7 @@
 package cn.enaium.community.util;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 
 import java.util.function.Consumer;
 
@@ -30,8 +31,14 @@ import java.util.function.Consumer;
  */
 public class WrapperUtil {
     public static <T> QueryWrapper<T> queryWrapper(Consumer<QueryWrapper<T>> queryWrapperConsumer) {
-        QueryWrapper<T> tQueryWrapper = new QueryWrapper<>();
-        queryWrapperConsumer.accept(tQueryWrapper);
-        return tQueryWrapper;
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+        queryWrapperConsumer.accept(queryWrapper);
+        return queryWrapper;
+    }
+
+    public static <T> UpdateWrapper<T> updateWrapper(Consumer<UpdateWrapper<T>> updateWrapperConsumer) {
+        UpdateWrapper<T> updateWrapper = new UpdateWrapper<>();
+        updateWrapperConsumer.accept(updateWrapper);
+        return updateWrapper;
     }
 }

@@ -21,6 +21,7 @@
 
 package cn.enaium.community.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.enaium.community.annotation.RequestParamMap;
 import cn.enaium.community.mapper.CategoryMapper;
@@ -80,24 +81,19 @@ public class PostController {
      * @return all post
      */
     @PostMapping("/posts")
+    @SaCheckPermission("post.query")
     public Result<Page<PostEntity>> posts(@RequestParamMap ParamMap<String, Object> params) {
         return Result.success(postMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(query -> {
-            query.eq("del", false);
+            if (!StpUtil.hasPermission("post.view.delete")) {
+                query.eq("del", false);
+            }
 
-            boolean noDraft = true;
-//            if (params.containsKey("draft")) {
-//                val roleList = StpUtil.getRoleList();
-//                if (!roleList.contains("admin") && !roleList.contains("super_admin")) {
-//                    query.eq("draft", true);
-//                }
-//            } else {
-//                query.eq("draft", false);
-//            }
+
+            boolean noDraft = !StpUtil.hasPermission("post.view.draft");
 
             if (params.containsKey("categoryId")) {
                 query.eq("category_id", params.getInt("categoryId"));
             }
-
 
             if (params.containsKey("userId")) {
                 val userId = params.getLong("userId");
@@ -107,7 +103,6 @@ public class PostController {
                 query.eq("user_id", userId);
             }
 
-
             if (noDraft) {
                 query.eq("draft", false);
             }
@@ -115,6 +110,7 @@ public class PostController {
     }
 
     @PostMapping("/publish")
+    @SaCheckPermission("post.publish")
     public Result<Object> publish(@RequestParamMap ParamMap<String, Object> params) {
 
         val categoryId = params.getInt("categoryId");
@@ -168,9 +164,14 @@ public class PostController {
     }
 
     @PostMapping("/info")
+    @SaCheckPermission("post.view")
     public Result<PostEntity> post(@RequestParamMap ParamMap<String, Object> params) {
         val id = params.getLong("id");
-        val postEntity = postMapper.selectById(id);
+        val postEntity = postMapper.selectOne(queryWrapper(query -> {
+            query.eq("id", id);
+            query.eq("draft", false);
+            query.eq("del", false);
+        }));
         postEntity.setViewCount(new AtomicInteger(postEntity.getViewCount()).incrementAndGet());
         postMapper.updateById(postEntity);
         return Result.success(postEntity);
