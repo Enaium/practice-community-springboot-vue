@@ -30,7 +30,7 @@ const router = useRouter()
 const route = useRoute()
 
 const data = reactive({
-  options: [] as any,
+  categories: [] as any,
   post: {
     categoryId: 1,
     title: '',
@@ -42,7 +42,7 @@ const data = reactive({
 onMounted(() => {
   http.get("/post/categories").then(r => {
     r.data.content.forEach((element: { title: string; id: number; }) => {
-      data.options.push({
+      data.categories.push({
         label: element.title,
         value: element.id
       })
@@ -73,7 +73,7 @@ const publish = () => {
     <n-form-item label="Category" path="category">
       <n-select
           v-model:value="data.post.categoryId"
-          :options="data.options"
+          :options="data.categories"
           placeholder="Select Category"
       />
     </n-form-item>

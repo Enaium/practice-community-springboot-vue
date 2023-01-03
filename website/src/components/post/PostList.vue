@@ -26,7 +26,7 @@ import PostItem from "@/components/post/PostItem.vue";
 
 const props = defineProps({
   category: Number,
-  user: Number
+  post: Number
 })
 
 
@@ -49,11 +49,11 @@ const posts = (categoryId: any, userId?: any) => {
 }
 
 const refresh = () => {
-  posts(props.category, props.user)
+  posts(props.category, props.post)
 }
 
 watch(() => props.category, (category) => {
-  posts(category, props.user)
+  posts(category, props.post)
 })
 
 const page = (page: number) => {

@@ -69,7 +69,7 @@ onMounted(() => {
     </n-tag>
   </div>
   <n-divider></n-divider>
-  <PostList :user="data.info.id" v-if="data.info.id"/>
+  <PostList :post="data.info.id" v-if="data.info.id"/>
 </template>
 
 <style scoped>

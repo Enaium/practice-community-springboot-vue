@@ -24,7 +24,7 @@
 </script>
 
 <template>
-<div>RoleList</div>
+
 </template>
 
 <style scoped>

@@ -60,31 +60,18 @@ const menuOptions: MenuOption[] = [
                 RouterLink,
                 {
                   to: {
-                    name: 'user-ban'
-                  }
-                },
-                {default: () => 'Ban'}
-            ),
-        key: "user-ban"
-      },
-      {
-        label: () =>
-            h(
-                RouterLink,
-                {
-                  to: {
-                    name: 'user-role'
+                    name: 'user-post'
                   }
                 },
                 {default: () => 'Role'}
             ),
-        key: "user-role"
+        key: "user-post"
       }
     ],
     key: "user"
   },
   {
-    label: "Role",
+    label: "Post",
     children: [
       {
         label: () =>
@@ -92,12 +79,12 @@ const menuOptions: MenuOption[] = [
                 RouterLink,
                 {
                   to: {
-                    name: 'role-list'
+                    name: 'post-list'
                   }
                 },
-                {default: () => 'List'}
+                {default: () => 'PostList'}
             ),
-        key: 'role-list'
+        key: 'post-list'
       },
       {
         label: () =>
@@ -105,15 +92,15 @@ const menuOptions: MenuOption[] = [
                 RouterLink,
                 {
                   to: {
-                    name: 'role-permission'
+                    name: 'comment-list'
                   }
                 },
-                {default: () => 'Permission'}
+                {default: () => 'CommentList'}
             ),
-        key: 'role-permission'
+        key: 'comment-list'
       }
     ],
-    key: "role"
+    key: "post"
   }
 ]
 
