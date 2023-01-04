@@ -25,26 +25,19 @@ import {useRoute, useRouter} from "vue-router";
 import http from "@/util/http";
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import {userInfo} from "@/util/request";
-import CommentList from "@/components/post/CommentList.vue";
+import CommentList from "@/components/comment/CommentList.vue";
 
 const router = useRouter()
 const route = useRoute()
 
 const data = reactive({
   post: {} as any,
-  me: false,
   comment: ''
 })
 
 onMounted(() => {
   http.post("/post/info", {id: route.query.id}).then(r => {
     data.post = r.data.content
-    userInfo().then((info: any) => {
-      if (info.id === data.post.userId) {
-        data.me = true
-      }
-    })
   })
 })
 
@@ -61,11 +54,9 @@ const publish = () => {
   <n-card :title="data.post.title">
     <md-editor v-model="data.post.content" preview-only/>
     <div style="display: flex;flex-direction: row-reverse">
-      <div v-if="data.me">
-        <n-button type="primary" @click="router.push({name:'publish', query:{id:route.query.id}})">
-          Edit
-        </n-button>
-      </div>
+      <n-button type="primary" @click="router.push({name:'publish', query:{id:route.query.id}})">
+        Edit
+      </n-button>
     </div>
   </n-card>
 
@@ -78,7 +69,7 @@ const publish = () => {
     </n-space>
   </n-card>
   <n-card :title="'Comment:'+data.post.commentCount">
-    <CommentList/>
+    <CommentList :postId="data.post.id" v-if="data.post.id"/>
   </n-card>
 </template>
 

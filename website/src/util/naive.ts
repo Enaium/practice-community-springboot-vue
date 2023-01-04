@@ -72,7 +72,9 @@ import {
     NThing,
     NTimeline,
     NTimelineItem,
-    NTooltip
+    NTooltip,
+    NIcon,
+    NDatePicker
 } from 'naive-ui'
 
 export default create({
@@ -128,6 +130,8 @@ export default create({
         NImage,
         NAvatar,
         NPopconfirm,
-        NPagination
+        NPagination,
+        NIcon,
+        NDatePicker
     ]
 })

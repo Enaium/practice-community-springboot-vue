@@ -19,18 +19,14 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script lang="ts" setup>
-import {onMounted, reactive, watch} from "vue";
+<script setup lang="ts">
+
+import {reactive} from "vue";
 import http from "@/util/http";
 import PostItem from "@/components/post/PostItem.vue";
 
-const props = defineProps<{
-  category: Number,
-  post: Number
-}>()
-
-
 const data = reactive({
+  title: '',
   post: {
     records: [],
     pages: 1,
@@ -38,45 +34,50 @@ const data = reactive({
   }
 })
 
-const posts = (categoryId: any, userId?: any) => {
+const search = () => {
   http.post("/post/posts", {
-    categoryId,
-    userId,
+    title: data.title,
     current: data.post.current
   }).then(r => {
     data.post = r.data.content
   })
 }
 
-const refresh = () => {
-  posts(props.category, props.post)
-}
-
-watch(() => props.category, (category) => {
-  posts(category, props.post)
-})
-
 const page = (page: number) => {
   data.post.current = page
-  refresh()
+  search()
 }
-
-
-onMounted(() => {
-  refresh()
-})
-
 </script>
+
 <template>
-  <n-list bordered>
-    <n-list-item v-for="post in data.post.records">
-      <PostItem :data="post"/>
-    </n-list-item>
-  </n-list>
-  <div style="display: flex;justify-content: center">
-    <n-pagination v-model:page="data.post.current" :page-count="data.post.pages" :on-update:page="page"/>
+  <div style="display: flex;gap: 5px">
+    <n-input v-model:value="data.title"/>
+    <n-button type="primary" @click="search">
+      Search
+      <template #icon>
+        <n-icon>
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+            <path
+                d="M456.69 421.39L362.6 327.3a173.81 173.81 0 0 0 34.84-104.58C397.44 126.38 319.06 48 222.72 48S48 126.38 48 222.72s78.38 174.72 174.72 174.72A173.81 173.81 0 0 0 327.3 362.6l94.09 94.09a25 25 0 0 0 35.3-35.3zM97.92 222.72a124.8 124.8 0 1 1 124.8 124.8a124.95 124.95 0 0 1-124.8-124.8z"
+                fill="currentColor"></path>
+          </svg>
+        </n-icon>
+      </template>
+    </n-button>
+  </div>
+  <div v-if="data.post.records.length !== 0">
+    <n-list bordered>
+      <n-list-item v-for="post in data.post.records">
+        <PostItem :data="post"/>
+      </n-list-item>
+    </n-list>
+
+    <div style="display: flex;justify-content: center">
+      <n-pagination v-model:page="data.post.current" :page-count="data.post.pages" :on-update:page="page"/>
+    </div>
   </div>
 </template>
+
 <style scoped>
 
 </style>

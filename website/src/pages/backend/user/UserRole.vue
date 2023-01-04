@@ -41,7 +41,7 @@ onMounted(() => {
 })
 
 const find = () => {
-  http.post("role/user", {id: data.id}).then(r => {
+  http.post("role/info", {id: data.id}).then(r => {
     data.role = r.data.content
   })
 }

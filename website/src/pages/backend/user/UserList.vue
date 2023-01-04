@@ -23,7 +23,7 @@
 
 import {h, onMounted, reactive} from "vue";
 import http from "@/util/http";
-import {NButton} from "naive-ui";
+import {NSwitch} from "naive-ui";
 import {normalTime} from "@/util/time";
 
 const columns = [
@@ -68,7 +68,8 @@ const columns = [
     title: "Banned",
     key: 'banned',
     render(row: any) {
-      return h(NButton, {
+      return h(NSwitch, {
+        value: row.banned,
         onClick: () => {
           row.banned = !row.banned
           http.post("/user/update", {id: row.id, ban: row.banned}).then(r => {
@@ -78,7 +79,7 @@ const columns = [
           })
         },
         type: row.banned ? "error" : "primary"
-      }, {default: () => row.banned ? "Unban" : "Ban"})
+      })
     }
   }
 ]

@@ -35,6 +35,32 @@ onMounted(() => {
     if (isLogin) {
       data.menu = [
         {
+          label: () =>
+              h(
+                  RouterLink,
+                  {
+                    to: {
+                      name: 'home'
+                    }
+                  },
+                  {default: () => 'Home'}
+              ),
+          key: "home"
+        },
+        {
+          label: () =>
+              h(
+                  RouterLink,
+                  {
+                    to: {
+                      name: 'search'
+                    }
+                  },
+                  {default: () => 'Search'}
+              ),
+          key: "search"
+        },
+        {
           label: "Me",
           children: [
             {
@@ -66,6 +92,7 @@ onMounted(() => {
           ],
           key: "me"
         },
+
         {
           label: () =>
               h(
@@ -115,13 +142,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-space justify="space-between">
-    <img
-        :src="Logo"
-        @click="this.$router.push({path:'/'})"
-    />
+  <div style="display: flex;justify-content: space-between;align-items: center">
+    <div style="display: flex;justify-content: center">
+      <img
+          :src="Logo"
+          @click="this.$router.push({path:'/'})"
+      />
+      <h3 @click="this.$router.push({path:'/'})">Community</h3>
+    </div>
+
     <n-menu :options="data.menu" mode="horizontal"/>
-  </n-space>
+  </div>
 </template>
 
 <style scoped>

@@ -19,38 +19,53 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script lang="ts" setup>
+<script setup lang="ts">
+
 import {onMounted, reactive} from "vue";
 import http from "@/util/http";
-import PostList from "@/components/post/PostList.vue";
-import {useRoute} from "vue-router";
+import CommentItem from "@/components/comment/CommentItem.vue";
 
+const props = defineProps<{
+  postId: Number
+}>()
 
 const data = reactive({
-  category: 1,
-  categories: []
+  comment: {
+    records: [],
+    pages: 1,
+    current: 1
+  }
 })
+
+const refresh = () => {
+  http.post("/comment/comments", {
+    postId: props.postId,
+    current: data.comment.current
+  }).then(r => {
+    data.comment = r.data.content
+  })
+}
 
 onMounted(() => {
-  http.get("/category/categories").then(r => {
-    data.categories = r.data.content
-  })
+  refresh()
 })
 
+const page = (page: number) => {
+  data.comment.current = page
+  refresh()
+}
 </script>
-<template>
-  <n-button-group>
-    <n-tooltip v-for="category in data.categories" placement="top-start" trigger="hover">
-      <template #trigger>
-        <n-button ghost @click="data.category = category.id">{{ category.title }}
-        </n-button>
-      </template>
-      {{ category.description }}
-    </n-tooltip>
-  </n-button-group>
-  <PostList :category="data.category"/>
-</template>
 
+<template>
+  <n-list bordered>
+    <n-list-item v-for="comment in data.comment.records">
+      <CommentItem :data="comment"/>
+    </n-list-item>
+  </n-list>
+  <div style="display: flex;justify-content: center" v-if="data.comment.records.length !== 0">
+    <n-pagination v-model:page="data.comment.current" :page-count="data.comment.pages" :on-update:page="page"/>
+  </div>
+</template>
 
 <style scoped>
 

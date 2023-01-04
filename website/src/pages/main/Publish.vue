@@ -40,7 +40,7 @@ const data = reactive({
 })
 
 onMounted(() => {
-  http.get("/post/categories").then(r => {
+  http.get("/category/categories").then(r => {
     r.data.content.forEach((element: { title: string; id: number; }) => {
       data.categories.push({
         label: element.title,
@@ -83,7 +83,7 @@ const publish = () => {
     </n-form-item>
 
     <n-form-item label="Content" path="content">
-      <md-editor v-model="data.post.content"/>
+      <md-editor v-model="data.post.title"/>
     </n-form-item>
 
     <n-form-item label="Draft" path="draft">

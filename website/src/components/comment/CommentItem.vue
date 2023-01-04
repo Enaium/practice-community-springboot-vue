@@ -19,25 +19,26 @@
   - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   -->
 
-<script lang="ts" setup>
-import Avatar from "@/components/Avatar.vue";
+<script setup lang="ts">
 import {onMounted, reactive} from "vue";
-import {useRouter} from "vue-router";
-import {normalTime} from "@/util/time";
 import {userInfo} from "@/util/request";
+import {useRouter} from "vue-router";
+import Avatar from "@/components/Avatar.vue";
+import {normalTime} from "@/util/time";
+import LikeButton from "@/components/LikeButton.vue";
+import DislikeButton from "@/components/DislikeButton.vue";
+import http from "@/util/http";
 
 const router = useRouter();
 
 const props = defineProps<{
   data: {
     id: Number,
-    draft: Boolean,
-    title: String,
     userId: Number,
-    commentCount: Number,
-    viewCount: Number,
-    updateTime: Date,
-    del: Boolean
+    content: String,
+    voteUp: Number,
+    voteDown: Number,
+    updateTime: Date
   }
 }>()
 
@@ -51,26 +52,34 @@ onMounted(() => {
   })
 })
 
+const like = () => {
+  http.post("/comment/update", {id: props.data.id, voteUp: 1})
+}
+
+const dislike = () => {
+  http.post("/comment/update", {id: props.data.id, voteDown: 1})
+}
 </script>
 
 <template>
-  <div style="display: flex;justify-content:space-between;align-items: center">
-    <div style="display: flex;align-items: center;gap: 10px">
-      <Avatar :size="48" :avatar="data.user.avatar" @click="router.push({name:'space', query:{id:props.data.userId}})"/>
-      <div>{{ props.data.commentCount }}/{{ props.data.viewCount }}</div>
-      <div @click="router.push({name:'post', query:{id:props.data.id}})">
-        {{ props.data.title }}
-      </div>
-    </div>
+  <div style="display: flex;align-items: center">
+    <Avatar :size="48" :avatar="data.user.avatar" @click="router.push({name:'space', query:{id:props.data.userId}})"/>
 
-    <div style="display: flex;align-items: center;gap: 10px">
-      <n-tag type="warning" v-if="props.data.draft">
-        Draft
-      </n-tag>
-      <n-tag type="error" v-if="props.data.del">
-        Delete
-      </n-tag>
-      {{ normalTime(props.data.updateTime) }}
+    <div style="display: flex;flex-direction:column;justify-content: center;width: 100%">
+      <div style="display: flex;justify-content:space-between;align-items: center">
+        <div>{{ data.user.username }} {{ normalTime(props.data.updateTime) }}</div>
+        <div style="display: flex;align-items: center">
+          <LikeButton @click="like"/>
+          <span>{{ props.data.voteUp }}</span>
+          <DislikeButton @click="dislike"/>
+          <span>{{ props.data.voteDown }}</span>
+        </div>
+      </div>
+      <div>{{ props.data.content }}</div>
     </div>
   </div>
 </template>
+
+<style scoped>
+
+</style>

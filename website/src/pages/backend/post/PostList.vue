@@ -23,7 +23,7 @@
 import {h, onMounted, reactive} from "vue";
 import http from "@/util/http";
 import {normalTime} from "@/util/time";
-import {NButton} from "naive-ui";
+import {NSwitch} from "naive-ui";
 
 const columns = [
   {
@@ -39,9 +39,17 @@ const columns = [
     title: "Draft",
     key: "draft",
     render(row: any) {
-      return h(NButton, {
-        type: row.draft ? "error" : "primary"
-      }, {default: () => "Draft"})
+      return h(NSwitch, {
+        value: row.draft,
+        onClick: () => {
+          row.draft = !row.draft
+          http.post("/post/publish", {id: row.id, draft: row.draft}).then(r => {
+            if (r.data.code == 200) {
+              window.$message.success("Success")
+            }
+          })
+        }
+      })
     }
   },
   {
@@ -70,9 +78,17 @@ const columns = [
     title: "Delete",
     key: "del",
     render(row: any) {
-      return h(NButton, {
-        type: row.draft ? "error" : "primary"
-      }, {default: () => row.banned ? "Recover" : "Delete"})
+      return h(NSwitch, {
+        value: row.del,
+        onClick: () => {
+          row.del = !row.del
+          http.post("/post/publish", {id: row.id, del: row.del}).then(r => {
+            if (r.data.code == 200) {
+              window.$message.success("Success")
+            }
+          })
+        }
+      })
     }
   }
 ]
@@ -82,12 +98,26 @@ const data = reactive({
     records: [],
     pages: 1,
     current: 1
-  }
+  },
+  form: {
+    title: undefined,
+    categoryId: undefined,
+    viewCount: undefined,
+    commentCount: undefined,
+    voteUp: undefined,
+    voteDown: undefined,
+    draft: undefined,
+    delete: undefined,
+    createTime: undefined,
+    updateTime: undefined,
+  },
+  categories: [] as any,
 })
 
 const refresh = () => {
   http.post("/post/posts", {
-    current: data.post.current
+    current: data.post.current,
+    ...data.form
   }).then(r => {
     data.post = r.data.content
   })
@@ -95,15 +125,81 @@ const refresh = () => {
 
 onMounted(() => {
   refresh()
+  http.get("/category/categories").then(r => {
+    r.data.content.forEach((element: { title: string; id: number; }) => {
+      data.categories.push({
+        label: element.title,
+        value: element.id
+      })
+    })
+  })
 })
 
 const page = (page: number) => {
   data.post.current = page
   refresh()
 }
+
+const filter = () => {
+  refresh()
+}
 </script>
 
 <template>
+  <n-card title="Filter">
+    <n-form>
+      <n-form-item label="Title">
+        <n-input v-model:value="data.form.title"/>
+      </n-form-item>
+
+      <n-form-item label="Category">
+        <n-select
+            v-model:value="data.form.categoryId"
+            :options="data.categories"
+            placeholder="Select Category"
+        />
+      </n-form-item>
+
+      <n-form-item label="View Count">
+        <n-input-number v-model:value="data.form.viewCount" clearable/>
+      </n-form-item>
+
+      <n-form-item label="Comment Count">
+        <n-input-number v-model:value="data.form.commentCount" clearable/>
+      </n-form-item>
+
+      <n-form-item label="Vote Up">
+        <n-input-number v-model:value="data.form.voteUp" clearable/>
+      </n-form-item>
+
+      <n-form-item label="Vote Down">
+        <n-input-number v-model:value="data.form.voteDown" clearable/>
+      </n-form-item>
+
+      <n-form-item label="Draft">
+        <n-switch v-model:value="data.form.draft"/>
+      </n-form-item>
+
+      <n-form-item label="Delete">
+        <n-switch v-model:value="data.form.delete"/>
+      </n-form-item>
+
+      <n-form-item label="Create Time">
+        <n-date-picker v-model:value="data.form.createTime" type="datetime" clearable/>
+      </n-form-item>
+
+      <n-form-item label="Update Time">
+        <n-date-picker v-model:value="data.form.updateTime" type="datetime" clearable/>
+      </n-form-item>
+
+      <n-form-item>
+        <n-button type="primary" @click="filter">
+          Filter
+        </n-button>
+      </n-form-item>
+    </n-form>
+
+  </n-card>
   <n-data-table
       ref="dataTableInst"
       :columns="columns"

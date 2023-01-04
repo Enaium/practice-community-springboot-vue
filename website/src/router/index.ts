@@ -36,6 +36,7 @@ import UserRole from "@/pages/backend/user/UserRole.vue";
 import PostList from "@/pages/backend/post/PostList.vue";
 import CommentList from "@/pages/backend/post/CommentList.vue";
 import UserCreate from "@/pages/backend/user/UserCreate.vue";
+import Search from "@/pages/main/Search.vue";
 
 
 const router = createRouter({
@@ -75,6 +76,11 @@ const router = createRouter({
                     path: "space",
                     name: "space",
                     component: Space
+                },
+                {
+                    path: "search",
+                    name: "search",
+                    component: Search
                 }
             ]
         },
