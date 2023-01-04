@@ -22,9 +22,9 @@
 package cn.enaium.community.controller;
 
 import cn.enaium.community.annotation.RequestParamMap;
-import cn.enaium.community.mapper.RoleMapper;
 import cn.enaium.community.model.entity.RoleEntity;
 import cn.enaium.community.model.result.Result;
+import cn.enaium.community.service.RoleService;
 import cn.enaium.community.util.ParamMap;
 import lombok.val;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,31 +41,25 @@ import java.util.List;
 @RequestMapping("/role")
 public class RoleController {
 
-    private final RoleMapper roleMapper;
+    private final RoleService roleService;
 
-    public RoleController(RoleMapper roleMapper) {
-        this.roleMapper = roleMapper;
+    public RoleController(RoleService roleService) {
+        this.roleService = roleService;
     }
 
-    @PostMapping("/user")
+    @PostMapping("/info")
     public Result<RoleEntity> user(@RequestParamMap ParamMap<String, Object> params) {
-        val roleEntity = roleMapper.selectByUserId(params.getLong("id"));
-        if (roleEntity == null) {
-            return Result.fail(Result.Code.USER_NOT_EXIST);
-        }
-        return Result.success(roleEntity);
+        return roleService.info(params);
     }
 
     @PostMapping("/update")
     public Result<Object> update(@RequestParamMap ParamMap<String, Object> params) {
-        val id = params.getLong("id");
-        val role = params.getInt("role");
-        roleMapper.updateByUserId(id, role);
-        return Result.success();
+        return roleService.update(params);
     }
+
 
     @GetMapping("/roles")
     public Result<List<RoleEntity>> roles() {
-        return Result.success(roleMapper.selectList(null));
+        return roleService.roles();
     }
 }

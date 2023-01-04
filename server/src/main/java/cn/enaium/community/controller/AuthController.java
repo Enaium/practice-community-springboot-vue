@@ -23,11 +23,10 @@ package cn.enaium.community.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.enaium.community.annotation.RequestParamMap;
-import cn.enaium.community.mapper.UserMapper;
-import cn.enaium.community.mapper.UserRoleRelationMapper;
 import cn.enaium.community.model.entity.UserEntity;
 import cn.enaium.community.model.entity.UserRoleRelationEntity;
 import cn.enaium.community.model.result.Result;
+import cn.enaium.community.service.UserService;
 import cn.enaium.community.util.DigestUtil;
 import cn.enaium.community.util.ParamMap;
 import lombok.val;
@@ -47,78 +46,20 @@ import static cn.enaium.community.util.WrapperUtil.queryWrapper;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserMapper userMapper;
-    private final UserRoleRelationMapper userRoleRelationMapper;
+    private final UserService userService;
 
-    public AuthController(UserMapper userMapper, UserRoleRelationMapper userRoleRelationMapper) {
-        this.userMapper = userMapper;
-        this.userRoleRelationMapper = userRoleRelationMapper;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/register")
     public Result<String> register(@RequestParamMap ParamMap<String, Object> params) {
-        val username = params.getString("username");
-        val password = params.getString("password");
-        val confirmPassword = params.getString("confirmPassword");
-
-        if (username.isBlank()) {
-            return Result.fail(Result.Code.USERNAME_BLANK);
-        }
-
-        if (password.isBlank()) {
-            return Result.fail(Result.Code.PASSWORD_BLANK);
-        }
-
-        val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
-
-        if (userEntity != null) {
-            return Result.fail(Result.Code.USER_ALREADY_EXIST);
-        } else if (!password.equals(confirmPassword)) {
-            return Result.fail(Result.Code.PASSWORD_NOT_MATCH);
-        }
-
-        val entity = new UserEntity();
-        entity.setUsername(username);
-        entity.setPassword(DigestUtil.md5(password));
-        entity.setCreateTime(new Date());
-        entity.setUpdateTime(new Date());
-
-        userMapper.insert(entity);
-
-        val userRoleRelationEntity = new UserRoleRelationEntity();
-        userRoleRelationEntity.setUserId(entity.getId());
-        userRoleRelationMapper.insert(userRoleRelationEntity);
-
-        return Result.success();
+        return userService.register(params);
     }
 
     @PostMapping("/login")
     public Result<String> login(@RequestParamMap ParamMap<String, Object> params) {
-
-        val username = params.getString("username");
-        val password = params.getString("password");
-
-        if (username.isBlank()) {
-            return Result.fail(Result.Code.USERNAME_BLANK);
-        }
-
-        if (password.isBlank()) {
-            return Result.fail(Result.Code.PASSWORD_BLANK);
-        }
-
-        val userEntity = userMapper.selectOne(queryWrapper(query -> query.eq("username", username)));
-
-        if (userEntity == null) {
-            return Result.fail(Result.Code.USER_NOT_EXIST);
-        } else if (!DigestUtil.md5(password).equals(userEntity.getPassword())) {
-            return Result.fail(Result.Code.PASSWORD_NOT_MATCH);
-        }
-
-        userEntity.setUpdateTime(new Date());
-
-        userMapper.updateById(userEntity);
-
-        return Result.success(StpUtil.createLoginSession(userEntity.getId()));
+        return userService.login(params);
     }
 
     @GetMapping("/logout")

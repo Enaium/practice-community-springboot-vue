@@ -28,12 +28,10 @@ import cn.dev33.satoken.stp.StpUtil;
  */
 public class AuthUtil {
     public static long getId() {
-        long id = 0;
         try {
-            id = StpUtil.getLoginIdAsLong();
+            return StpUtil.getLoginIdAsLong();
         } catch (Exception exception) {
-
+            return 0;
         }
-        return id;
     }
 }

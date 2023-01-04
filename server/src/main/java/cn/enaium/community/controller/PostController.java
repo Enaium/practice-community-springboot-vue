@@ -22,28 +22,15 @@
 package cn.enaium.community.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.enaium.community.annotation.RequestParamMap;
-import cn.enaium.community.mapper.CategoryMapper;
-import cn.enaium.community.mapper.PostMapper;
-import cn.enaium.community.mapper.UserMapper;
-import cn.enaium.community.model.entity.CategoryEntity;
 import cn.enaium.community.model.entity.PostEntity;
 import cn.enaium.community.model.result.Result;
-import cn.enaium.community.util.AuthUtil;
+import cn.enaium.community.service.PostService;
 import cn.enaium.community.util.ParamMap;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.val;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static cn.enaium.community.util.WrapperUtil.queryWrapper;
 
 /**
  * @author Enaium
@@ -51,27 +38,11 @@ import static cn.enaium.community.util.WrapperUtil.queryWrapper;
 @RestController
 @RequestMapping("/post")
 public class PostController {
-
-    private final CategoryMapper categoryMapper;
-    private final PostMapper postMapper;
-
-    private final UserMapper userMapper;
+    private final PostService postService;
 
 
-    public PostController(CategoryMapper categoryMapper, PostMapper postMapper, UserMapper userMapper) {
-        this.categoryMapper = categoryMapper;
-        this.postMapper = postMapper;
-        this.userMapper = userMapper;
-    }
-
-    /**
-     * get all category
-     *
-     * @return categories
-     */
-    @GetMapping("/categories")
-    public Result<List<CategoryEntity>> categories() {
-        return Result.success(categoryMapper.selectList(null));
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
     /**
@@ -81,99 +52,25 @@ public class PostController {
      * @return all post
      */
     @PostMapping("/posts")
-    @SaCheckPermission("post.query")
     public Result<Page<PostEntity>> posts(@RequestParamMap ParamMap<String, Object> params) {
-        return Result.success(postMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(query -> {
-            if (!StpUtil.hasPermission("post.view.delete")) {
-                query.eq("del", false);
-            }
-
-
-            boolean noDraft = !StpUtil.hasPermission("post.view.draft");
-
-            if (params.containsKey("categoryId")) {
-                query.eq("category_id", params.getInt("categoryId"));
-            }
-
-            if (params.containsKey("userId")) {
-                val userId = params.getLong("userId");
-                if (userId == AuthUtil.getId()) {
-                    noDraft = false;
-                }
-                query.eq("user_id", userId);
-            }
-
-            if (noDraft) {
-                query.eq("draft", false);
-            }
-        })));
+        return postService.posts(params);
     }
 
+    /**
+     * publish post
+     *
+     * @param params map param
+     * @return result
+     */
     @PostMapping("/publish")
     @SaCheckPermission("post.publish")
     public Result<Object> publish(@RequestParamMap ParamMap<String, Object> params) {
-
-        val categoryId = params.getInt("categoryId");
-        val title = params.getString("title");
-        val content = params.getString("content");
-        val draft = params.getBoolean("draft");
-
-        if (title.isBlank()) {
-            return Result.fail(Result.Code.TITLE_BLANK);
-        }
-
-        if (title.isBlank()) {
-            return Result.fail(Result.Code.CONTENT_BLANK);
-        }
-
-        if (categoryMapper.selectById(categoryId) == null) {
-            return Result.fail(Result.Code.CATEGORY_NOT_EXIST);
-        }
-
-        val postEntity = new PostEntity();
-
-        postEntity.setUserId(StpUtil.getLoginIdAsLong());
-        postEntity.setCategoryId(categoryId);
-        postEntity.setTitle(title);
-        postEntity.setContent(content);
-        postEntity.setDraft(draft);
-
-        postEntity.setUpdateTime(new Date());
-
-        if (params.containsKey("id")) {
-            val post = postMapper.selectById(params.getLong("id"));
-            if (post == null) {
-                return Result.fail(Result.Code.POST_NOT_EXIST);
-            }
-
-            if (post.getUserId() != StpUtil.getLoginIdAsLong()) {
-                return Result.fail(Result.Code.NO_PERMISSION);
-            }
-
-            postEntity.setId(params.getLong("id"));
-            postMapper.updateById(postEntity);
-        } else {
-            postEntity.setCreateTime(new Date());
-            postMapper.insert(postEntity);
-            val userEntity = userMapper.selectById(StpUtil.getLoginIdAsLong());
-            userEntity.setPostCount(new AtomicInteger(userEntity.getPostCount()).incrementAndGet());
-            userMapper.updateById(userEntity);
-        }
-
-        return Result.success();
+        return postService.publish(params);
     }
 
+
     @PostMapping("/info")
-    @SaCheckPermission("post.view")
-    public Result<PostEntity> post(@RequestParamMap ParamMap<String, Object> params) {
-        val id = params.getLong("id");
-        val postEntity = postMapper.selectOne(queryWrapper(query -> {
-            query.eq("id", id);
-            query.eq("draft", false);
-            query.eq("del", false);
-        }));
-        postEntity.setViewCount(new AtomicInteger(postEntity.getViewCount()).incrementAndGet());
-        postMapper.updateById(postEntity);
-        return Result.success(postEntity);
+    public Result<PostEntity> info(@RequestParamMap ParamMap<String, Object> params) {
+        return postService.info(params);
     }
 }

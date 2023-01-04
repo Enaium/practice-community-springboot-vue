@@ -21,56 +21,35 @@
 
 package cn.enaium.community.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.stp.StpUtil;
-import cn.enaium.community.annotation.RequestParamMap;
-import cn.enaium.community.model.entity.UserEntity;
+import cn.enaium.community.mapper.CategoryMapper;
+import cn.enaium.community.model.entity.CategoryEntity;
 import cn.enaium.community.model.result.Result;
-import cn.enaium.community.service.UserService;
-import cn.enaium.community.util.AuthUtil;
-import cn.enaium.community.util.ParamMap;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.val;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-
-import static cn.enaium.community.util.WrapperUtil.queryWrapper;
+import java.util.List;
 
 /**
  * @author Enaium
  */
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/category")
+public class CategoryController {
 
-    private final UserService userService;
+    private final CategoryMapper categoryMapper;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @PostMapping("/info")
-    public Result<UserEntity> info(@RequestParamMap ParamMap<String, Object> params) {
-        return userService.info(params);
-    }
-
-    @PostMapping("/update")
-    public Result<Object> update(@RequestParamMap ParamMap<String, Object> params) {
-        return userService.update(params);
+    public CategoryController(CategoryMapper categoryMapper) {
+        this.categoryMapper = categoryMapper;
     }
 
     /**
-     * get all user
+     * get all category
      *
-     * @param params map param
-     * @return all user
+     * @return categories
      */
-    @PostMapping("/users")
-    @SaCheckPermission("user.query")
-    public Result<Page<UserEntity>> users(@RequestParamMap ParamMap<String, Object> params) {
-        return userService.users(params);
+    @GetMapping("/categories")
+    public Result<List<CategoryEntity>> categories() {
+        return Result.success(categoryMapper.selectList(null));
     }
 }

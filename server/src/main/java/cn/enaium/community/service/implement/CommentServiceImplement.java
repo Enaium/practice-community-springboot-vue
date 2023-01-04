@@ -21,19 +21,128 @@
 
 package cn.enaium.community.service.implement;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.enaium.community.mapper.CommentMapper;
+import cn.enaium.community.mapper.PostMapper;
 import cn.enaium.community.model.entity.CommentEntity;
+import cn.enaium.community.model.result.Result;
 import cn.enaium.community.service.CommentService;
+import cn.enaium.community.util.AuthUtil;
+import cn.enaium.community.util.ParamMap;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.val;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static cn.enaium.community.util.WrapperUtil.queryWrapper;
 
 /**
  * @author Enaium
  */
 @Service
-public class CommentServiceImplement extends ServiceImpl<CommentMapper, CommentEntity>
-        implements CommentService {
+public class CommentServiceImplement extends ServiceImpl<CommentMapper, CommentEntity> implements CommentService {
 
+    private final CommentMapper commentMapper;
+    private final PostMapper postMapper;
+
+    public CommentServiceImplement(CommentMapper commentMapper, PostMapper postMapper) {
+        this.commentMapper = commentMapper;
+        this.postMapper = postMapper;
+    }
+
+    public Result<Object> publish(ParamMap<String, Object> params) {
+        val postId = params.getLong("postId");
+        val content = params.getString("content");
+        val commentEntity = new CommentEntity();
+        commentEntity.setPostId(postId);
+        commentEntity.setUserId(AuthUtil.getId());
+        commentEntity.setContent(content);
+        commentEntity.setCreateTime(new Date());
+        commentEntity.setUpdateTime(new Date());
+        commentMapper.insert(commentEntity);
+
+        val postEntity = postMapper.selectById(postId);
+        if (postEntity == null) {
+            return Result.fail(Result.Code.POST_NOT_EXIST);
+        }
+
+        postEntity.setCommentCount(new AtomicInteger(postEntity.getCommentCount()).incrementAndGet());
+        postEntity.setUpdateTime(new Date());
+        postMapper.updateById(postEntity);
+
+        return Result.success();
+    }
+
+    public Result<Page<CommentEntity>> comments(ParamMap<String, Object> params) {
+        return Result.success(commentMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(query -> {
+            if (StpUtil.hasPermission("post.view.delete")) {
+                if (params.has("delete")) {
+                    query.eq("del", params.getBoolean("delete"));
+                }
+            } else {
+                query.eq("del", false);
+            }
+
+            if (params.has("content")) {
+                val content = params.getString("content");
+                if (content.isBlank() && query.isEmptyOfWhere()) {
+                    query.ne("0", "0");
+                } else {
+                    query.like("content", content);
+                }
+            }
+
+            if (params.has("voteUp")) {
+                query.ge("vote_up", params.getInt("voteUp"));
+            }
+
+            if (params.has("voteDown")) {
+                query.ge("vote_down", params.getInt("voteDown"));
+            }
+
+            if (params.has("postId")) {
+                query.eq("post_id", params.getLong("postId"));
+            }
+
+            if (params.has("createTime")) {
+                query.ge("create_time", new Date(params.getLong("createTime")));
+            }
+
+            if (params.has("updateTime")) {
+                query.ge("update_time", new Date(params.getLong("updateTime")));
+            }
+
+            query.orderByDesc("update_time");
+        })));
+    }
+
+    public Result<CommentEntity> info(ParamMap<String, Object> params) {
+        return Result.success(commentMapper.selectById(params.getLong("id")));
+    }
+
+    public Result<Object> update(ParamMap<String, Object> params) {
+        val entity = commentMapper.selectById(params.getLong("id"));
+        if (params.has("voteUp")) {
+            entity.setVoteUp(new AtomicInteger(entity.getVoteUp()).incrementAndGet());
+        } else if (params.has("voteDown")) {
+            entity.setVoteDown(new AtomicInteger(entity.getVoteDown()).incrementAndGet());
+        }
+
+        if (params.has("del")) {
+            if (!StpUtil.hasPermission("comment.delete")) {
+                return Result.fail(Result.Code.NO_PERMISSION);
+            }
+
+            entity.setDel(params.getBoolean("del"));
+        }
+
+        entity.setUpdateTime(new Date());
+        commentMapper.updateById(entity);
+        return Result.success();
+    }
 }
 
 

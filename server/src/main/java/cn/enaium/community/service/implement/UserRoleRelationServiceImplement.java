@@ -31,8 +31,7 @@ import org.springframework.stereotype.Service;
  * @author Enaium
  */
 @Service
-public class UserRoleRelationServiceImplement extends ServiceImpl<UserRoleRelationMapper, UserRoleRelationEntity>
-        implements UserRoleRelationService {
+public class UserRoleRelationServiceImplement extends ServiceImpl<UserRoleRelationMapper, UserRoleRelationEntity> implements UserRoleRelationService {
 
 }
 

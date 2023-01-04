@@ -21,21 +21,16 @@
 
 package cn.enaium.community.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.enaium.community.annotation.RequestParamMap;
-import cn.enaium.community.mapper.CommentMapper;
 import cn.enaium.community.model.entity.CommentEntity;
 import cn.enaium.community.model.result.Result;
-import cn.enaium.community.util.AuthUtil;
+import cn.enaium.community.service.CommentService;
 import cn.enaium.community.util.ParamMap;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.val;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
-
-import static cn.enaium.community.util.WrapperUtil.queryWrapper;
 
 /**
  * @author Enaium
@@ -43,37 +38,31 @@ import static cn.enaium.community.util.WrapperUtil.queryWrapper;
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
-    private final CommentMapper commentMapper;
+    private final CommentService commentService;
 
-    public CommentController(CommentMapper commentMapper) {
-        this.commentMapper = commentMapper;
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     @PostMapping("/publish")
+    @SaCheckPermission("comment.publish")
     public Result<Object> publish(@RequestParamMap ParamMap<String, Object> params) {
-        val postId = params.getLong("postId");
-        val content = params.getString("content");
-        val commentEntity = new CommentEntity();
-        commentEntity.setPostId(postId);
-        commentEntity.setUserId(AuthUtil.getId());
-        commentEntity.setContent(content);
-        commentEntity.setCreateTime(new Date());
-        commentEntity.setUpdateTime(new Date());
-        commentMapper.insert(commentEntity);
-        return Result.success();
+        return commentService.publish(params);
     }
 
     @PostMapping("/comments")
-    public Page<CommentEntity> comments(@RequestParamMap ParamMap<String, Object> params) {
-        return commentMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(wrapper -> {
-            if (params.has("postId")) {
-                wrapper.eq("post_id", params.getLong("postId"));
-            }
-        }));
+    public Result<Page<CommentEntity>> comments(@RequestParamMap ParamMap<String, Object> params) {
+        return commentService.comments(params);
     }
+
 
     @PostMapping("/info")
     public Result<CommentEntity> info(@RequestParamMap ParamMap<String, Object> params) {
-        return Result.success(commentMapper.selectById(params.getLong("id")));
+        return commentService.info(params);
+    }
+
+    @PostMapping("/update")
+    public Result<Object> update(@RequestParamMap ParamMap<String, Object> params) {
+        return commentService.update(params);
     }
 }

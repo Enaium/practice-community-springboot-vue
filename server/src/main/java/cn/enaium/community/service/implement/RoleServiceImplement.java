@@ -23,17 +23,45 @@ package cn.enaium.community.service.implement;
 
 import cn.enaium.community.mapper.RoleMapper;
 import cn.enaium.community.model.entity.RoleEntity;
+import cn.enaium.community.model.result.Result;
 import cn.enaium.community.service.RoleService;
+import cn.enaium.community.util.ParamMap;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.val;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Enaium
  */
 @Service
-public class RoleServiceImplement extends ServiceImpl<RoleMapper, RoleEntity>
-        implements RoleService {
+public class RoleServiceImplement extends ServiceImpl<RoleMapper, RoleEntity> implements RoleService {
 
+    private final RoleMapper roleMapper;
+
+    public RoleServiceImplement(RoleMapper roleMapper) {
+        this.roleMapper = roleMapper;
+    }
+
+    public Result<RoleEntity> info(ParamMap<String, Object> params) {
+        val roleEntity = roleMapper.selectByUserId(params.getLong("id"));
+        if (roleEntity == null) {
+            return Result.fail(Result.Code.USER_NOT_EXIST);
+        }
+        return Result.success(roleEntity);
+    }
+
+    public Result<Object> update(ParamMap<String, Object> params) {
+        val id = params.getLong("id");
+        val role = params.getInt("role");
+        roleMapper.updateByUserId(id, role);
+        return Result.success();
+    }
+
+    public Result<List<RoleEntity>> roles() {
+        return Result.success(roleMapper.selectList(null));
+    }
 }
 
 
