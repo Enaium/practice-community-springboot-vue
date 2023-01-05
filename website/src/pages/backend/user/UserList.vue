@@ -90,12 +90,15 @@ const data = reactive({
     pages: 1,
     current: 1
   },
-  banId: 0
+  form: {
+    username: undefined
+  }
 })
 
 const refresh = () => {
   http.post("/user/users", {
-    current: data.post.current
+    current: data.post.current,
+    ...data.form
   }).then(r => {
     data.post = r.data.content
   })
@@ -109,14 +112,35 @@ const page = (page: number) => {
   data.post.current = page
   refresh()
 }
+
+const filter = () => {
+  refresh()
+}
 </script>
 
 <template>
+
+  <n-card title="Filter">
+    <n-form>
+      <n-form-item label="Username">
+        <n-input v-model:value="data.form.username"/>
+      </n-form-item>
+
+      <n-form-item>
+        <n-button type="primary" @click="filter">
+          Filter
+        </n-button>
+      </n-form-item>
+    </n-form>
+
+  </n-card>
   <n-data-table
       ref="dataTableInst"
       :columns="columns"
       :data="data.post.records"
   />
+
+
 
   <div style="display: flex;justify-content: center">
     <n-pagination v-model:page="data.post.current" :page-count="data.post.pages" :on-update:page="page"/>

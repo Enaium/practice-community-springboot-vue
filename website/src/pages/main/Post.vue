@@ -26,6 +26,8 @@ import http from "@/util/http";
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import CommentList from "@/components/comment/CommentList.vue";
+import LikeButton from "@/components/LikeButton.vue";
+import DislikeButton from "@/components/DislikeButton.vue";
 
 const router = useRouter()
 const route = useRoute()
@@ -48,10 +50,28 @@ const publish = () => {
     }
   })
 }
+
+const like = () => {
+  http.post("/post/update", {id: data.post.id, voteUp: 1})
+}
+
+const dislike = () => {
+  http.post("/post/update", {id: data.post.id, voteDown: 1})
+}
 </script>
 
 <template>
-  <n-card :title="data.post.title">
+  <n-card>
+    <div style="display: flex;justify-content:space-between;align-items: center">
+      <div>{{ data.post.title }}</div>
+      <div style="display: flex;align-items: center">
+        <LikeButton @click="like"/>
+        <span>{{ data.post.voteUp }}</span>
+        <DislikeButton @click="dislike"/>
+        <span>{{ data.post.voteDown }}</span>
+      </div>
+    </div>
+
     <md-editor v-model="data.post.content" preview-only/>
     <div style="display: flex;flex-direction: row-reverse">
       <n-button type="primary" @click="router.push({name:'publish', query:{id:route.query.id}})">

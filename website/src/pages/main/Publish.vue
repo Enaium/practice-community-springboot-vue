@@ -83,7 +83,7 @@ const publish = () => {
     </n-form-item>
 
     <n-form-item label="Content" path="content">
-      <md-editor v-model="data.post.title"/>
+      <md-editor v-model="data.post.content"/>
     </n-form-item>
 
     <n-form-item label="Draft" path="draft">

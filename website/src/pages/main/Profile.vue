@@ -57,7 +57,7 @@ const update = () => {
         <n-input v-model:value="data.info.username"/>
       </n-form-item>
 
-      <n-form-item label="Avtar" path="avatar">
+      <n-form-item label="Avatar" path="avatar">
         <n-input v-model:value="data.info.avatar"/>
       </n-form-item>
 
