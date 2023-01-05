@@ -24,6 +24,7 @@ package cn.enaium.community.service.implement;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.enaium.community.mapper.CommentMapper;
 import cn.enaium.community.mapper.PostMapper;
+import cn.enaium.community.mapper.UserMapper;
 import cn.enaium.community.model.entity.CommentEntity;
 import cn.enaium.community.model.result.Result;
 import cn.enaium.community.service.CommentService;
@@ -47,10 +48,12 @@ public class CommentServiceImplement extends ServiceImpl<CommentMapper, CommentE
 
     private final CommentMapper commentMapper;
     private final PostMapper postMapper;
+    private final UserMapper userMapper;
 
-    public CommentServiceImplement(CommentMapper commentMapper, PostMapper postMapper) {
+    public CommentServiceImplement(CommentMapper commentMapper, PostMapper postMapper, UserMapper userMapper) {
         this.commentMapper = commentMapper;
         this.postMapper = postMapper;
+        this.userMapper = userMapper;
     }
 
     public Result<Object> publish(ParamMap<String, Object> params) {
@@ -85,7 +88,9 @@ public class CommentServiceImplement extends ServiceImpl<CommentMapper, CommentE
         postEntity.setCommentCount(new AtomicInteger(postEntity.getCommentCount()).incrementAndGet());
         postEntity.setUpdateTime(new Date());
         postMapper.updateById(postEntity);
-
+        val userEntity = userMapper.selectById(AuthUtil.getId());
+        userEntity.setCommentCount(new AtomicInteger(userEntity.getCommentCount()).incrementAndGet());
+        userMapper.updateById(userEntity);
         return Result.success();
     }
 
