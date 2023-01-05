@@ -131,7 +131,6 @@ public class PostServiceImplement extends ServiceImpl<PostMapper, PostEntity> im
         })));
     }
 
-
     public Result<Object> publish(ParamMap<String, Object> params) {
         val postEntity = new PostEntity();
         if (params.has("categoryId")) {
@@ -196,13 +195,39 @@ public class PostServiceImplement extends ServiceImpl<PostMapper, PostEntity> im
 
     public Result<PostEntity> info(ParamMap<String, Object> params) {
         val id = params.getLong("id");
-        val postEntity = postMapper.selectOne(queryWrapper(query -> {
-            query.eq("id", id);
-            query.eq("draft", false);
-            query.eq("del", false);
-        }));
+        val postEntity = postMapper.selectById(id);
+
+        if (postEntity == null) {
+            return Result.fail(Result.Code.POST_NOT_EXIST);
+        }
+
+        if (postEntity.getDraft()) {
+            if (!StpUtil.hasPermission("post.view.draft") || !postEntity.getUserId().equals(AuthUtil.getId())) {
+                return Result.fail(Result.Code.NO_PERMISSION);
+            }
+        }
+
+        if (postEntity.getDel()) {
+            if (!StpUtil.hasPermission("post.view.delete")) {
+                return Result.fail(Result.Code.NO_PERMISSION);
+            }
+        }
+
+
         postEntity.setViewCount(new AtomicInteger(postEntity.getViewCount()).incrementAndGet());
         postMapper.updateById(postEntity);
         return Result.success(postEntity);
+    }
+
+    public Result<Object> update(ParamMap<String, Object> params) {
+        val entity = postMapper.selectById(params.getLong("id"));
+        if (params.has("voteUp")) {
+            entity.setVoteUp(new AtomicInteger(entity.getVoteUp()).incrementAndGet());
+        } else if (params.has("voteDown")) {
+            entity.setVoteDown(new AtomicInteger(entity.getVoteDown()).incrementAndGet());
+        }
+        entity.setUpdateTime(new Date());
+        postMapper.updateById(entity);
+        return Result.success();
     }
 }

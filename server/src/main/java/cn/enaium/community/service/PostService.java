@@ -17,4 +17,6 @@ public interface PostService extends IService<PostEntity> {
     Result<Object> publish(ParamMap<String, Object> params);
 
     Result<PostEntity> info(ParamMap<String, Object> params);
+
+    Result<Object> update(ParamMap<String, Object> params);
 }

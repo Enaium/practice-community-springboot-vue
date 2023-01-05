@@ -73,4 +73,9 @@ public class PostController {
     public Result<PostEntity> info(@RequestParamMap ParamMap<String, Object> params) {
         return postService.info(params);
     }
+
+    @PostMapping("/update")
+    public Result<Object> update(@RequestParamMap ParamMap<String, Object> params) {
+        return postService.update(params);
+    }
 }

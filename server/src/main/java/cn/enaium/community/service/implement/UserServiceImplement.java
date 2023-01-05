@@ -179,7 +179,13 @@ public class UserServiceImplement extends ServiceImpl<UserMapper, UserEntity> im
 
     public Result<Page<UserEntity>> users(ParamMap<String, Object> params) {
         return Result.success(userMapper.selectPage(new Page<>(params.getInt("current", 1), Math.min(params.getInt("size", 10), 20)), queryWrapper(query -> {
+            if (params.has("username")) {
+                val username = params.getString("username");
 
+                if (!username.isBlank()) {
+                    query.like("username", username);
+                }
+            }
         })));
     }
 }
