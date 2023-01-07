@@ -2,15 +2,23 @@
 
 A simple community
 
+一个简单的用户社区
+
 ## Website
+
+前端使用:
 
 vite,vue,typescript,vue router,naive,axios,markdown edit
 
 ## Server
 
+后端使用:
+
 springboot,mybatis plus,sa-token,mariadb
 
 ## Image
+
+图片
 
 ![Home](https://user-images.githubusercontent.com/32991121/210692692-1e5bdb88-d92a-46a1-89b0-e723fc31c19a.png)
 ![Post](https://user-images.githubusercontent.com/32991121/210692777-9f7dc6d6-2620-4259-8776-527b6bcef71f.png)
